@@ -2,21 +2,84 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate  } from 'react-router-dom';
 import { User } from "../models/user";
-
+import "../index.css";
 
 export const AllUsers = () =>{
     const navigate = useNavigate();
     const [allUsers, setAllUsers] = useState<User[]>([]);
+    const [allTypes, setAllTypes] = useState<string[]>([]);
+    const [name, setName] = useState<string>("");
+    const [type, setType] = useState<string>("");
 
-    useEffect(() => {
+    useEffect(() => { // za dohvatanje korisnika
         axios.get('http://localhost:3004/users')
         .then(response => {
             setAllUsers(response.data);
+            let types: string[] = response.data.reduce((prev:string[],curr:User)=>{
+                if(!prev.includes(curr.UserType)){
+                    return prev.concat([curr.UserType]);
+                }
+                return prev;
+            },[""]);
+            setAllTypes(types);
         })
         .catch(error => {
             console.log(error);
         });
     }, []);
+
+    const changeFilterParams = (e: { target: { name: string; value: string; }; }) =>{ //menjanje parametara za filter
+        switch(e.target.name){
+            case "filterIme":
+                setName(e.target.value);
+                break;
+            case "odabranTip":
+                setType(e.target.value);
+                break;
+            default: break;
+        }
+    }
+
+    useEffect(() => { //za filtriranje
+        let setTimeoutId: NodeJS.Timeout;
+        function getPromise(): Promise<User[]>{
+            return new Promise((resolve,reject)=>{
+             setTimeoutId = setTimeout(()=>{
+                 axios.get('http://localhost:3004/users').then(response => {
+                    const filteredData: User[] = response.data.filter((elem: User) =>
+                       elem.Name.startsWith(name) && (!type || elem.UserType == type)
+                    );
+                    resolve(filteredData);
+                })
+                .catch(error => console.error(error));
+            },300)
+        })
+        }
+        getPromise().then((response: User[]) => setAllUsers(response)).catch(error => console.error(error));
+        return () => {
+            clearTimeout(setTimeoutId);
+        };
+    }, [name, type]);
+
+    const filters = ( // HTML filteri
+        <>
+            Filtriraj po imenu: <input type="text" name="filterIme" id="filterIme" onChange={changeFilterParams} /> &nbsp;
+            Odaberi tip korisnika: 
+            <select name="odabranTip" id="odabranTip" onChange={changeFilterParams}>      
+                {
+                    allTypes.map((elem,index)=>{
+                        return(
+                            <option key={index} value={elem}>
+                                {elem}
+                            </option>
+                        );
+                    })
+                }
+            </select>
+        </>
+    );
+
+    const navigateOnUpdateUser = (userId:number) => {navigate(`/updateUser/${userId}`)}
 
     const users = allUsers.map((user: User)=>{
         const date: Date = new Date(user.DateCreated);
@@ -30,12 +93,20 @@ export const AllUsers = () =>{
                 </td>
                 <td>{user.City}</td>
                 <td>{user.Address}</td>
+                <td>
+                    <button className="btn btn-success" onClick={() => navigateOnUpdateUser(user.id)}>
+                        Azuriraj
+                    </button> &nbsp;
+                    <button className="btn btn-danger">
+                        Obrisi
+                    </button>
+                </td>
             </tr>
         );
     })
 
-    const tabela = (
-        <table className="table table-striped table-light" style={{margin:"0 auto", width:"50%"}}>
+    const tabela = ( // HTML tabela korisnika
+        <table className="table table-striped table-light" style={{margin:"0 auto", width:"80%"}}>
             <thead className="thead-dark">
                 <tr>
                     <th>Ime</th>
@@ -44,6 +115,7 @@ export const AllUsers = () =>{
                     <th>Datum kreiranja</th>
                     <th>Grad</th>
                     <th>Adresa</th>
+                    <th>Azuriraj</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,20 +124,28 @@ export const AllUsers = () =>{
         </table>
     );
 
-    const onAddUser = () => {navigate('/addUser');}
+    const navigateOnAddUser = () => {navigate('/addUser');}
 
     const toAddUser = (
-        <button className="btn btn-success" onClick={onAddUser}>
+        <button className="btn btn-success" onClick={navigateOnAddUser}>
             Dodaj novog korisnika
         </button>
     );
 
+    let imeKorisnika;
+    if(allUsers.length)
+        imeKorisnika = tabela;
+    else
+        imeKorisnika = "Nema korisnika koji zadovoljavaju kriterijum pretrage";
+
     return (
        <div style={{textAlign:"center"}}>
         <h2>Svi korisnici</h2>
-        {allUsers.length && tabela}
-        <br/>
-        {toAddUser}
+        {filters}  
+        <br/><br/>
+        {toAddUser} 
+        <br/> <br/>
+        {imeKorisnika}
        </div>
     );
 }

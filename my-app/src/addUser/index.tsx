@@ -63,6 +63,28 @@ export const AddUser = () =>{
             default: break;
         }
     }
+
+    const filledData = (): boolean =>{ // da li su svi podaci popunjeni
+        return name != "" && address != "" && surname != "" && type != "" && city != "";
+    }
+
+    let addButton;
+    if(filledData())
+        addButton = (
+            <>
+            <button className="btn btn-success" onClick={addUser}>
+                Dodaj korisnika
+            </button>
+            </>
+        );
+    else
+        addButton = (
+            <>
+            <button className="btn btn-danger" disabled>
+                Niste uneli sve podatke
+            </button> <br/>
+            </>
+        );      
     
     return (
         <div style={{textAlign: "center"}}>
@@ -90,9 +112,8 @@ export const AddUser = () =>{
                     <th><input value={address} type="text" name="" id="address" onChange={inputChanged}/></th>
                 </tr>
             </table> <br/>
-            <button className="btn btn-success" onClick={addUser}>
-                Dodaj korisnika
-            </button> <br/>
+            {addButton}
+            <br/>
             <span style={{color:"green"}}>{message}</span>
         </div>
     );
