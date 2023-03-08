@@ -1,0 +1,130 @@
+{
+  "users": [
+    {
+      "Name": "Mihailo",
+      "Surname": "Tomasevic",
+      "UserType": "admin",
+      "DateCreated": "2023-03-08T12:06:18.203Z",
+      "City": "Beograd",
+      "Address": "Ulica 123",
+      "id": 1
+    },
+    {
+      "Name": "Maka",
+      "Surname": "Makic",
+      "UserType": "seller",
+      "DateCreated": "2023-03-08T12:27:24.554Z",
+      "City": "Novi Sad",
+      "Address": "Ulica 345",
+      "id": 2
+    },
+    {
+      "Name": "Mika",
+      "Surname": "Mikic",
+      "UserType": "buyer",
+      "DateCreated": "2023-03-08T12:27:51.872Z",
+      "City": "Subotica",
+      "Address": "Ulica 567",
+      "id": 3
+    },
+    {
+      "Name": "Pera",
+      "Surname": "Peric",
+      "UserType": "buyer",
+      "DateCreated": "2023-03-08T12:28:15.703Z",
+      "City": "Kragujevac",
+      "Address": "Ulica 234",
+      "id": 4
+    },
+    {
+      "Name": "Zaka",
+      "Surname": "Zakic",
+      "UserType": "seller",
+      "DateCreated": "2023-03-08T12:28:46.311Z",
+      "City": "Nis",
+      "Address": "Idemoo Niss 234",
+      "id": 5
+    },
+    {
+      "Name": "Baka",
+      "Surname": "Bakic",
+      "UserType": "buyer",
+      "DateCreated": "2023-03-08T12:31:48.078Z",
+      "City": "Kraljevo",
+      "Address": "Ulica 478",
+      "id": 6
+    },
+    {
+      "Name": "Jaka",
+      "Surname": "Jakic",
+      "UserType": "organizator",
+      "DateCreated": "2023-03-08T12:32:43.218Z",
+      "City": "Ruma",
+      "Address": "Ulica 300",
+      "id": 7
+    },
+    {
+      "Name": "Taka",
+      "Surname": "Takic",
+      "UserType": "organizator",
+      "DateCreated": "2023-03-08T12:33:08.097Z",
+      "City": "Sid",
+      "Address": "Ulica 232",
+      "id": 8
+    },
+    {
+      "Name": "Vaka",
+      "Surname": "Vakic",
+      "UserType": "buyer",
+      "DateCreated": "2023-03-08T12:33:11.665Z",
+      "City": "Uzice",
+      "Address": "Ulica 124",
+      "id": 9
+    },
+    {
+      "Name": "Paka",
+      "Surname": "Pakic",
+      "UserType": "buyer",
+      "DateCreated": "2023-03-08T12:33:15.284Z",
+      "City": "Pirot",
+      "Address": "Ulica 126",
+      "id": 10
+    },
+    {
+      "Name": "Naka",
+      "Surname": "Nakic",
+      "UserType": "seller",
+      "DateCreated": "2023-03-08T12:33:18.958Z",
+      "City": "Prijepolje",
+      "Address": "Ulica 211",
+      "id": 11
+    },
+    {
+      "Name": "Laka",
+      "Surname": "Lakic",
+      "UserType": "buyer",
+      "DateCreated": "2023-03-08T12:33:22.577Z",
+      "City": "Priboj",
+      "Address": "Ulica 909S",
+      "id": 12
+    },
+    {
+      "Name": "Raka",
+      "Surname": "Rakic",
+      "UserType": "buyer",
+      "DateCreated": "2023-03-08T12:33:26.328Z",
+      "City": "Sombor",
+      "Address": "Ulica 408",
+      "id": 13
+    },
+    {
+      "Name": "Daka",
+      "Surname": "Dakic",
+      "UserType": "seller",
+      "DateCreated": "2023-03-08T12:33:29.807Z",
+      "City": "Krusevac",
+      "Address": "Ulica 236",
+      "id": 14
+    }
+  ]
+}
