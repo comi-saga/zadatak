@@ -11,7 +11,7 @@
     },
     {
       "Name": "Maka",
-      "Surname": "Makica",
+      "Surname": "Makic",
       "UserType": "seller",
       "DateCreated": "2023-03-08T12:27:24.554Z",
       "City": "Novi Sads",
@@ -50,7 +50,7 @@
       "Surname": "Bakic",
       "UserType": "buyer",
       "DateCreated": "2023-03-08T12:31:48.078Z",
-      "City": "Kraljevooo",
+      "City": "Kraljevo",
       "Address": "Ulica 478",
       "id": 6
     },
@@ -109,31 +109,13 @@
       "id": 12
     },
     {
-      "Name": "Mara",
-      "Surname": "Rakic",
-      "UserType": "buyer",
-      "DateCreated": "2023-03-08T12:33:26.328Z",
-      "City": "Sombor",
-      "Address": "Ulica 408",
-      "id": 13
-    },
-    {
       "Name": "Daka",
       "Surname": "Dakic",
       "UserType": "seller",
-      "DateCreated": "2023-03-08T12:33:29.807Z",
-      "City": "Krusevac",
-      "Address": "Ulica 236",
-      "id": 14
-    },
-    {
-      "Name": "Novi",
-      "Surname": "Korisnik",
-      "UserType": "buyer",
-      "DateCreated": "2023-03-08T15:16:53.756Z",
-      "City": "Vrsac",
-      "Address": "Ulica 555",
-      "id": 15
+      "DateCreated": "2023-03-09T10:13:32.820Z",
+      "City": "Arilje",
+      "Address": "Ulica 987",
+      "id": 13
     }
   ]
 }

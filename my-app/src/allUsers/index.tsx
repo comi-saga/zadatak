@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate  } from 'react-router-dom';
 import { User } from "../models/user";
 import "../index.css";
+import DeleteUserModal from "../deleteUserModal";
+
 
 export const AllUsers = () =>{
     const navigate = useNavigate();
@@ -10,6 +12,10 @@ export const AllUsers = () =>{
     const [allTypes, setAllTypes] = useState<string[]>([]);
     const [name, setName] = useState<string>("");
     const [type, setType] = useState<string>("");
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(-1);
+    const [message, setMessage] = useState("");
 
     useEffect(() => { // za dohvatanje korisnika
         axios.get('http://localhost:3004/users')
@@ -79,7 +85,37 @@ export const AllUsers = () =>{
         </>
     );
 
-    const navigateOnUpdateUser = (userId:number) => {navigate(`/updateUser/${userId}`)}
+    const navigateOnUpdateUser = (userId:number) => {navigate(`/updateUser/${userId}`)};
+
+    const handleOpenDeleteModal = (userId: number) =>{
+        setSelectedUser(userId);
+        setShowDeleteModal(true);
+    }
+
+    const handleCloseDeleteModal = () =>{
+        setShowDeleteModal(false);
+    }
+
+    const handleDeleteUser = () =>{
+        axios.delete(`http://localhost:3004/users/${selectedUser}`)
+        .then(response => {
+           setMessage("Uspesno ste obrisali korisnika");
+           axios.get('http://localhost:3004/users')
+            .then(response => {
+            setAllUsers(response.data);
+            let types: string[] = response.data.reduce((prev:string[],curr:User)=>{
+                if(!prev.includes(curr.UserType)){
+                    return prev.concat([curr.UserType]);
+                }
+                return prev;
+            },[""]);
+            setAllTypes(types);
+        })
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
 
     const users = allUsers.map((user: User)=>{
         const date: Date = new Date(user.DateCreated);
@@ -97,7 +133,7 @@ export const AllUsers = () =>{
                     <button className="btn btn-success" onClick={() => navigateOnUpdateUser(user.id)}>
                         Azuriraj
                     </button> &nbsp;
-                    <button className="btn btn-danger">
+                    <button className="btn btn-danger" onClick={()=> handleOpenDeleteModal(user.id)}>
                         Obrisi
                     </button>
                 </td>
@@ -106,7 +142,7 @@ export const AllUsers = () =>{
     })
 
     const tabela = ( // HTML tabela korisnika
-        <table className="table table-striped table-light" style={{margin:"0 auto", width:"80%"}}>
+        <table className="table table-striped table-light" style={{margin:"0 auto", width:"90%"}}>
             <thead className="thead-dark">
                 <tr>
                     <th>Ime</th>
@@ -121,6 +157,13 @@ export const AllUsers = () =>{
             <tbody>
                 {users}
             </tbody>
+             {selectedUser && (
+            <DeleteUserModal
+            isOpen={showDeleteModal}
+            onRequestClose={handleCloseDeleteModal}
+            onDelete={handleDeleteUser}
+            />
+            )}
         </table>
     );
 
@@ -132,20 +175,32 @@ export const AllUsers = () =>{
         </button>
     );
 
-    let imeKorisnika;
+    let imaKorisnika;
     if(allUsers.length)
-        imeKorisnika = tabela;
+        imaKorisnika = tabela;
     else
-        imeKorisnika = "Nema korisnika koji zadovoljavaju kriterijum pretrage";
+        imaKorisnika = "Nema korisnika koji zadovoljavaju kriterijum pretrage";
 
+    let imaPoruke;
+    if(message)
+        imaPoruke = (
+            <>
+                <span style={{color:"green"}}>{message}</span>
+                <br/> <br/>
+            </>
+        );
+    else
+        imaPoruke = null;
+    
     return (
        <div style={{textAlign:"center"}}>
         <h2>Svi korisnici</h2>
         {filters}  
         <br/><br/>
         {toAddUser} 
-        <br/> <br/>
-        {imeKorisnika}
+        <br/><br/>
+        {imaPoruke}
+        {imaKorisnika}
        </div>
     );
 }

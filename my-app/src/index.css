@@ -12,8 +12,7 @@ code {
     monospace;
 }
 
-.tab {
-  padding-top: 200px;
-  margin-top: 200px;
-  
+.left-menu {
+  display: inline-block;
+  width: 15%;
 }
