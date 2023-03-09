@@ -7,9 +7,9 @@ export const Menu = () =>{
     const location = useLocation();
     console.log(location.pathname);
 
-    const classNameAddUser = location.pathname == "/addUser" ? "list-group-item active" : "list-group-item";
+    const classNameAbout1 = location.pathname == "/about1" ? "list-group-item active" : "list-group-item";
     const classNameAllUsers = location.pathname == "/" ? "list-group-item active" : "list-group-item";
-    const classNameUpdateUser = location.pathname.includes("/updateUser") ? "list-group-item active" : "list-group-item";
+    const classNameAbout2 = location.pathname == "/about2" ? "list-group-item active" : "list-group-item";
     
     const styleForText = {
         color: "black",
@@ -22,11 +22,11 @@ export const Menu = () =>{
         <li className={classNameAllUsers}>
           <Link to="/"><span style={styleForText}>Svi korisnici</span></Link>
         </li>
-        <li  className={classNameAddUser}>
-          <Link to="/addUser"><span style={styleForText}>Dodaj korisnika</span> </Link>
+        <li  className={classNameAbout1}>
+          <Link to="/about1"><span style={styleForText}>About 1</span> </Link>
         </li>
-        <li className={classNameUpdateUser}>
-          <Link to="/updateUser/1"><span style={styleForText}>Azuriraj korisnika</span> </Link>
+        <li className={classNameAbout2}>
+          <Link to="/about2"><span style={styleForText}>About 2</span> </Link>
         </li>
       </ul>
     </div>

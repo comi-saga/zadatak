@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { User } from "../models/user";
 import { useNavigate, useParams } from "react-router-dom";
+import "../index.css";
 
 export const UpdateUser = () =>{
     const navigate = useNavigate();
@@ -125,7 +126,7 @@ export const UpdateUser = () =>{
         );      
 
     return (
-        <div style={{textAlign: "center"}}>
+        <div className="update-User-wrapper">
             <h2>Azuriraj korisnika {name} {surname}</h2>
             <br/> 
             <table style={{margin:"0 auto"}}>

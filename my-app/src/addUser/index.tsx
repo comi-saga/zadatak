@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { User } from "../models/user";
+import "../index.css";
 
 export const AddUser = () =>{
     const [name, setName] = useState("");
@@ -87,7 +88,7 @@ export const AddUser = () =>{
         );      
     
     return (
-        <div style={{textAlign: "center"}}>
+        <div className="add-User-wrapper">
             <h2>Dodaj novog korisnika</h2>
             <br/> 
             <table style={{margin:"0 auto"}}>

@@ -13,17 +13,65 @@ code {
 }
 
 .left-menu {
-  width: 15%;
-  top: 0px;
-  left: 0px;
-  position: absolute;
-  display: inline-block;
-  background-color: white;
+  width: 17rem;
 }
 
 .content {
-    display: inline-block;
-    width: 85%; 
-    background-color: yellow;
-    right: 0px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+}
+
+body {
+  background-image: url("../public/more.jfif");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.content-filter {
+  justify-content: center;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.content-filter-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.content-filter-action {
+  display: flex;
+  justify-content: center;
+}
+
+.content-filter-fields {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.content-filter-fields span {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.table{
+  text-align: center;
+}
+
+h2{
+  text-align: center;
+}
+
+.add-User-wrapper, .update-User-wrapper{
+  margin-top: 20px;
+  text-align: center;
 }

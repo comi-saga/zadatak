@@ -12,7 +12,7 @@ const customStyles = {
   }
 };
 
-Modal.setAppElement('#root');
+//Modal.setAppElement('#root');
 
 type Props = {
     isOpen: boolean,
@@ -30,13 +30,15 @@ function DeleteUserModal(props: Props) {
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
+      <div style={{ position: 'relative' }}>
       <h2>Obrisi korisnika</h2>
       <p>Da li ste sigurni da zelite da obrisete korisnika?</p>
       <button className='btn btn-success' onClick={onRequestClose}>Otkazi</button> &nbsp;
       <button className='btn btn-danger' onClick={handleDelete}>Obrisi</button>
-      <button style={{position: "absolute",top: "0px", right: "0px"}} onClick={onRequestClose}>
+      <button style={{position: "absolute", top: "0px", right: "0px"}} onClick={onRequestClose}>
         X
       </button>
+      </div>
     </Modal>
   );
 }
