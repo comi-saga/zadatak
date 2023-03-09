@@ -142,7 +142,7 @@ export const AllUsers = () =>{
     })
 
     const tabela = ( // HTML tabela korisnika
-        <table className="table table-striped table-light" style={{margin:"0 auto", width:"90%"}}>
+        <table className="table table-striped table-light" style={{width:"84%", float:"right", marginRight:"1%"}}>
             <thead className="thead-dark">
                 <tr>
                     <th>Ime</th>
@@ -194,13 +194,13 @@ export const AllUsers = () =>{
     
     return (
        <div style={{textAlign:"center"}}>
-        <h2>Svi korisnici</h2>
-        {filters}  
-        <br/><br/>
-        {toAddUser} 
-        <br/><br/>
-        {imaPoruke}
-        {imaKorisnika}
+            <h2>Svi korisnici</h2>
+            {filters}  
+            <br/><br/>
+            {toAddUser} 
+            <br/><br/>
+            {imaPoruke}
+            {imaKorisnika}
        </div>
     );
 }

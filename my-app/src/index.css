@@ -13,6 +13,17 @@ code {
 }
 
 .left-menu {
-  display: inline-block;
   width: 15%;
+  top: 0px;
+  left: 0px;
+  position: absolute;
+  display: inline-block;
+  background-color: white;
+}
+
+.content {
+    display: inline-block;
+    width: 85%; 
+    background-color: yellow;
+    right: 0px;
 }

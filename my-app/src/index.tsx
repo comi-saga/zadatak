@@ -13,7 +13,7 @@ function App() {
   return (
     <Router>
       <Menu/>
-      <div style={{display: "inline-block", width:"85%"}}>
+      <div className="contnet">
         <Routes>
           <Route path="/" element={<AllUsers/>} />
           <Route path="/addUser" element={<AddUser/>} />
