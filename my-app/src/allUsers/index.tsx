@@ -1,9 +1,9 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../models/user";
 import "../index.css";
 import DeleteUserModal from "../deleteUserModal";
+import { deleteUser, fetchUsers } from "../service";
 
 export const AllUsers = () => {
   const navigate = useNavigate();
@@ -18,8 +18,7 @@ export const AllUsers = () => {
 
   useEffect(() => {
     // za dohvatanje korisnika
-    axios
-      .get("http://localhost:3004/users")
+   fetchUsers()
       .then((response) => {
         setAllUsers(response.data);
         return response;
@@ -57,7 +56,6 @@ export const AllUsers = () => {
     }
   };
 
-  const fetchUsers = () => axios.get<User[]>("http://localhost:3004/users");
 
   useEffect(() => {
     //za filtriranje
@@ -95,11 +93,10 @@ export const AllUsers = () => {
   };
 
   const handleDeleteUser = () => {
-    axios
-      .delete(`http://localhost:3004/users/${selectedUser}`)
+    deleteUser(selectedUser)
       .then((response) => {
         setMessage("Uspesno ste obrisali korisnika");
-        axios.get("http://localhost:3004/users").then((response) => {
+        fetchUsers().then((response) => {
           setAllUsers(response.data);
           let types: string[] = response.data.reduce(
             (prev: string[], curr: User) => {

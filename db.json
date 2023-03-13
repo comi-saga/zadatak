@@ -6,7 +6,7 @@
       "UserType": "admin",
       "DateCreated": "2023-03-08T12:06:18.203Z",
       "City": "Prijepolje",
-      "Address": "Ulica 1236",
+      "Address": "Ulica 123",
       "id": 1
     },
     {
@@ -42,7 +42,7 @@
       "UserType": "seller",
       "DateCreated": "2023-03-08T12:28:46.311Z",
       "City": "Nis",
-      "Address": "Idemoo Niss 234",
+      "Address": "Idemoo Niss ",
       "id": 5
     },
     {
@@ -98,15 +98,6 @@
       "City": "Prijepolje",
       "Address": "Ulica 211",
       "id": 11
-    },
-    {
-      "Name": "Korisnik",
-      "Surname": "Novi",
-      "UserType": "tip",
-      "DateCreated": "2023-03-09T13:08:25.505Z",
-      "City": "Grad",
-      "Address": "Ulica 222",
-      "id": 12
     }
   ]
 }

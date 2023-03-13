@@ -1,8 +1,8 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { User } from "../models/user";
 import "../index.css";
+import { addUserService } from "../service";
 
 export const AddUser = () =>{
     const [name, setName] = useState("");
@@ -28,7 +28,7 @@ export const AddUser = () =>{
             Address: address
         }
 
-        axios.post('http://localhost:3004/users',data).then(
+        addUserService(data).then(
             response => {
                 setMessage("Uspesno ste dodali novog korisnika");
                 setName("");
@@ -90,31 +90,31 @@ export const AddUser = () =>{
     return (
         <div className="add-User-wrapper">
             <h2>Dodaj novog korisnika</h2>
-            <br/> 
-            <table style={{margin:"0 auto"}}>
-                <tr>
-                    <th>Ime:</th>
-                    <th><input value={name} type="text" name="" id="name" onChange={inputChanged}/></th>
-                </tr>
-                <tr>
-                    <th>Prezime:</th>
-                    <th><input value={surname} type="text" name="" id="surname" onChange={inputChanged}/></th>
-                </tr>
-                <tr>
-                    <th>Tip:</th>
-                    <th><input value={type} type="text" name="" id="type"onChange={inputChanged} /></th>
-                </tr>
-                <tr>
-                    <th>Grad:</th>
-                    <th><input value={city} type="text" name="" id="city" onChange={inputChanged}/></th>
-                </tr>
-                <tr>
-                    <th>Adresa:</th>
-                    <th><input value={address} type="text" name="" id="address" onChange={inputChanged}/></th>
-                </tr>
-            </table> <br/>
+            <div className="add-user-fields">
+                <table style={{margin:"0 auto"}}>
+                    <tr>
+                        <th>Ime:</th>
+                        <th><input value={name} type="text" name="" id="name" onChange={inputChanged}/></th>
+                    </tr>
+                    <tr>
+                        <th>Prezime:</th>
+                        <th><input value={surname} type="text" name="" id="surname" onChange={inputChanged}/></th>
+                    </tr>
+                    <tr>
+                        <th>Tip:</th>
+                        <th><input value={type} type="text" name="" id="type"onChange={inputChanged} /></th>
+                    </tr>
+                    <tr>
+                        <th>Grad:</th>
+                        <th><input value={city} type="text" name="" id="city" onChange={inputChanged}/></th>
+                    </tr>
+                    <tr>
+                        <th>Adresa:</th>
+                        <th><input value={address} type="text" name="" id="address" onChange={inputChanged}/></th>
+                    </tr>
+                </table>
+            </div>
             {addButton}
-            <br/>
             <span style={{color:"green"}}>{message}</span>
         </div>
     );

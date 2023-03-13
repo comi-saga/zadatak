@@ -1,9 +1,9 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { User } from "../models/user";
 import { useNavigate, useParams } from "react-router-dom";
 import "../index.css";
+import { fetchUserById, updateUserService } from "../service";
 
 export const UpdateUser = () =>{
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ export const UpdateUser = () =>{
     const [originalAddress, setOriginalAddress] = useState("");
 
     useEffect(()=>{
-        axios.get(`http://localhost:3004/users/${userId}`)
+        fetchUserById(parseInt(userId!))
         .then(response => {
             setUser(response.data);
 
@@ -82,7 +82,7 @@ export const UpdateUser = () =>{
             Address: address
         }
 
-        axios.put(`http://localhost:3004/users/${userId}`,data).then(
+        updateUserService(parseInt(userId!), data).then(
             response => {
                 navigate("/");
             }
