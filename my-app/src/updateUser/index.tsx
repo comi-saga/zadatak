@@ -4,10 +4,17 @@ import { User } from "../models/user";
 import { useNavigate, useParams } from "react-router-dom";
 import "../index.css";
 import { fetchUserById, updateUserService } from "../service";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-export const UpdateUser = () =>{
+type Props = {
+    userId: number,
+    handleDialog: ()=> void
+}
+
+export const UpdateUser = (props: Props) =>{
     const navigate = useNavigate();
-    const { userId } = useParams();
+    const userId = props.userId;
     const [user, setUser] = useState<User>();
 
     const [name, setName] = useState("");
@@ -23,7 +30,7 @@ export const UpdateUser = () =>{
     const [originalAddress, setOriginalAddress] = useState("");
 
     useEffect(()=>{
-        fetchUserById(parseInt(userId!))
+        fetchUserById(userId)
         .then(response => {
             setUser(response.data);
 
@@ -68,11 +75,6 @@ export const UpdateUser = () =>{
     }
 
     const updateUser = () => {
-         if(!name || !surname || !type || !city || !address){
-            alert("Niste popunili sva polja");
-            return;
-        }
-
         const data = {
             Name: name,
             Surname: surname,
@@ -82,9 +84,13 @@ export const UpdateUser = () =>{
             Address: address
         }
 
-        updateUserService(parseInt(userId!), data).then(
+        updateUserService(userId, data).then(
             response => {
-                navigate("/");
+                toast.success("Uspesno ste azurirali korisnika", {
+                    position: toast.POSITION.TOP_RIGHT,
+                    onClose: () => {props.handleDialog()},
+                    autoClose: 1000
+                });       
             }
         ).catch(
             error => console.error(error)

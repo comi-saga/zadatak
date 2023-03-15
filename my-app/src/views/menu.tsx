@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import "./index.css";
+import "../index.css";
 
 export const Menu = () =>{
     const location = useLocation();

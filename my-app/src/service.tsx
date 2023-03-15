@@ -5,11 +5,34 @@ const uri = "http://localhost:3004";
 
 export const fetchUsers = () => axios.get<User[]>(`${uri}/users`);
 
-export const fetchUserById = (userId: number) => axios.get<User>(`http://localhost:3004/users/${userId}`)
+export const fetchUserById = (userId: number) =>
+  axios.get<User>(`${uri}/users/${userId}`);
 
-export const deleteUser = (selectedUser: number) => axios.delete(`http://localhost:3004/users/${selectedUser}`)
+export const deleteUser = (selectedUser: number) =>
+  axios.delete(`${uri}/users/${selectedUser}`);
 
-export const updateUserService = (userId: number, body: {}) => axios.put(`http://localhost:3004/users/${userId}`, body)
+export const updateUserService = (userId: number, body: {}) =>
+  axios.put(`${uri}/users/${userId}`, body);
 
-export const addUserService = (body: {}) => axios.post('http://localhost:3004/users',body)
+export const addUserService = (body: {}) => axios.post(`${uri}/users`, body);
 
+export const DateToString = (date: Date) => {
+  return (
+    (date.getDate() < 10 ? "0" : "") +
+    date.getDate() +
+    "/" +
+    (date.getMonth() < 9 ? "0" : "") +
+    date.getMonth() +
+    "/" +
+    date.getFullYear() +
+    " " +
+    (date.getHours() < 10 ? "0" : "") +
+    date.getHours() +
+    ":" +
+    (date.getMinutes() < 10 ? 0 : "") +
+    date.getMinutes() +
+    ":" +
+    (date.getSeconds() < 10 ? 0 : "") +
+    date.getSeconds()
+  );
+};

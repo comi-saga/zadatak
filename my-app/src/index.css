@@ -23,12 +23,12 @@ code {
   justify-content: center;
 }
 
-body {
-  background-image: url("../public/more.jfif");
+/*body {
+  background-image: url("../public/drvo.jfif");
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
-}
+}*/
 
 .wrapper {
   display: flex;
