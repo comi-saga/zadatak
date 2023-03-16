@@ -23,13 +23,6 @@ code {
   justify-content: center;
 }
 
-/*body {
-  background-image: url("../public/drvo.jfif");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-}*/
-
 .wrapper {
   display: flex;
   justify-content: center;
@@ -72,11 +65,10 @@ h2{
 }
 
 .add-User-wrapper, .update-User-wrapper{
-  margin-top: 20px;
   text-align: center;
 }
 
-.add-user-fields, .update-User-fields{
+.add-user-fields, .update-user-fields{
   margin-top: 20px;
   margin-bottom: 20px;
 }

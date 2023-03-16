@@ -38,13 +38,13 @@ export const About1 = () => {
     <div className="update-User-wrapper">
       <h2>Ovo je About1 stranica</h2>
       <Timer />
-      <Dropdown
+      {/*<Dropdown
         placeholder="Select an option"
         label="Basic uncontrolled example"
         options={options}
         styles={dropdownStyles}
       ></Dropdown>
-      <DetailsList items={items} />
+  <DetailsList items={items} />*/}
     </div>
   );
 };

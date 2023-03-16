@@ -10,12 +10,12 @@
       "id": 1
     },
     {
-      "Name": "Maka",
+      "Name": "Makaa",
       "Surname": "Makic",
       "UserType": "seller",
       "DateCreated": "2023-03-08T12:27:24.554Z",
       "City": "Novi Sad",
-      "Address": "Ulica 34507",
+      "Address": "Ulica 345",
       "id": 2
     },
     {
@@ -37,7 +37,7 @@
       "id": 4
     },
     {
-      "Name": "Zaka",
+      "Name": "Zakaa",
       "Surname": "Zakic",
       "UserType": "seller",
       "DateCreated": "2023-03-08T12:28:46.311Z",

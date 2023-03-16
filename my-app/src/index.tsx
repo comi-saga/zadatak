@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="wrapper">
       <Router>
-        <Menu />
+        <Menu/>
         <div className="content">
           <Routes>
             <Route path="/" element={<AllUsers />} />

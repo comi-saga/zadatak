@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { User } from "../models/user";
-import { useNavigate, useParams } from "react-router-dom";
 import "../index.css";
 import { fetchUserById, updateUserService } from "../service";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { DefaultButton, PrimaryButton } from "@fluentui/react";
 
 type Props = {
     userId: number,
@@ -13,7 +13,6 @@ type Props = {
 }
 
 export const UpdateUser = (props: Props) =>{
-    const navigate = useNavigate();
     const userId = props.userId;
     const [user, setUser] = useState<User>();
 
@@ -88,9 +87,9 @@ export const UpdateUser = (props: Props) =>{
             response => {
                 toast.success("Uspesno ste azurirali korisnika", {
                     position: toast.POSITION.TOP_RIGHT,
-                    onClose: () => {props.handleDialog()},
                     autoClose: 1000
                 });       
+                props.handleDialog();
             }
         ).catch(
             error => console.error(error)
@@ -108,55 +107,44 @@ export const UpdateUser = (props: Props) =>{
     let updateButton;
     if(updatedData() && filledData())
         updateButton = (
-            <>
-            <button className="btn btn-success" onClick={updateUser}>
-                Azuriraj korisnika
-            </button> <br/>
-            </>
+            <PrimaryButton text="Azuriraj korisnika" onClick={updateUser}/>
         );
     else if(updatedData() && !filledData())
         updateButton = (
-            <>
-            <button className="btn btn-danger" disabled>
-                Niste uneli sve podatke
-            </button> <br/>
-            </>
+            <DefaultButton text="Niste uneli sve podatke" disabled/>
         );
     else
         updateButton = (
-            <>
-            <button className="btn btn-danger" disabled>
-                Niste promenili podatke
-            </button> <br/>
-            </>
+            <DefaultButton text="Niste promenili podatke" disabled/>
         );      
 
     return (
         <div className="update-User-wrapper">
-            <h2>Azuriraj korisnika {name} {surname}</h2>
-            <br/> 
-            <table style={{margin:"0 auto"}}>
-                <tr>
-                    <th>Ime:</th>
-                    <th><input value={name} type="text" name="" id="name" onChange={inputChanged}/></th>
-                </tr>
-                <tr>
-                    <th>Prezime:</th>
-                    <th><input value={surname} type="text" name="" id="surname" onChange={inputChanged}/></th>
-                </tr>
-                <tr>
-                    <th>Tip:</th>
-                    <th><input value={type} type="text" name="" id="type"onChange={inputChanged} /></th>
-                </tr>
-                <tr>
-                    <th>Grad:</th>
-                    <th><input value={city} type="text" name="" id="city" onChange={inputChanged}/></th>
-                </tr>
-                <tr>
-                    <th>Adresa:</th>
-                    <th><input value={address} type="text" name="" id="address" onChange={inputChanged}/></th>
-                </tr>
-            </table> <br/>
+            <h3>Azuriraj korisnika {name} {surname}</h3>
+            <div className="update-user-fields">
+                <table style={{margin:"0 auto"}}>
+                    <tr>
+                        <th>Ime:</th>
+                        <th><input value={name} type="text" name="" id="name" onChange={inputChanged}/></th>
+                    </tr>
+                    <tr>
+                        <th>Prezime:</th>
+                        <th><input value={surname} type="text" name="" id="surname" onChange={inputChanged}/></th>
+                    </tr>
+                    <tr>
+                        <th>Tip:</th>
+                        <th><input value={type} type="text" name="" id="type"onChange={inputChanged} /></th>
+                    </tr>
+                    <tr>
+                        <th>Grad:</th>
+                        <th><input value={city} type="text" name="" id="city" onChange={inputChanged}/></th>
+                    </tr>
+                    <tr>
+                        <th>Adresa:</th>
+                        <th><input value={address} type="text" name="" id="address" onChange={inputChanged}/></th>
+                    </tr>
+                </table> 
+            </div>
             {updateButton}
         </div>
     );

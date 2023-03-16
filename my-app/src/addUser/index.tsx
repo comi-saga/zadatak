@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { User } from "../models/user";
+import { useState } from "react";
 import "../index.css";
 import { addUserService } from "../service";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { DefaultButton, PrimaryButton } from "@fluentui/react";
 
 type Props = {
   handleDialog: () => void
@@ -36,8 +35,8 @@ export const AddUser = (props: Props) => {
         toast.success("Uspesno ste dodali novog korisnika", {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 1000,
-          onClose: () => {props.handleDialog();}
-        });      
+        });
+        props.handleDialog();      
       })
       .catch((error) => console.error(error));
   };
@@ -75,25 +74,16 @@ export const AddUser = (props: Props) => {
   let addButton;
   if (filledData())
     addButton = (
-      <>
-        <button className="btn btn-success" onClick={addUser}>
-          Dodaj korisnika
-        </button>
-      </>
+      <PrimaryButton text="Dodaj korisnika" onClick={addUser}/>
     );
   else
     addButton = (
-      <>
-        <button className="btn btn-danger" disabled>
-          Niste uneli sve podatke
-        </button>{" "}
-        <br />
-      </>
+      <DefaultButton text="Niste uneli sve podatke" disabled/>
     );
 
   return (
     <div className="add-User-wrapper">
-      <h2>Dodaj novog korisnika</h2>
+      <h3>Dodaj novog korisnika</h3>
       <div className="add-user-fields">
         <table style={{ margin: "0 auto" }}>
           <tr>

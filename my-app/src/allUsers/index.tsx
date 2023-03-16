@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { User } from "../models/user";
 import "../index.css";
 import { DateToString, deleteUser, fetchUsers } from "../service";
@@ -8,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { Id } from "react-toastify/dist/types";
 import {
   DetailsList,
-  Dropdown,
   CheckboxVisibility,
   SelectionMode,
   DefaultButton,
@@ -16,12 +14,14 @@ import {
   DialogFooter,
   PrimaryButton,
   DialogType,
+  SearchBox,
+  Dropdown,
+  IDropdownOption,
 } from "@fluentui/react";
 import { AddUser } from "../addUser";
 import { UpdateUser } from "../updateUser";
 
 export const AllUsers = () => {
-  const navigate = useNavigate();
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [allTypes, setAllTypes] = useState<string[]>([]);
   const [name, setName] = useState<string>("");
@@ -36,7 +36,7 @@ export const AllUsers = () => {
   const [hideUpdateDialog, setHideUpdateDialog] = useState(true);
   const [selectedUserUpdate, setSelectedUserUpdate] = useState(-1);
 
-  useEffect(() => {
+  const fetchAllUsers = () => {
     // za dohvatanje korisnika
     fetchUsers()
       .then((response) => {
@@ -58,23 +58,11 @@ export const AllUsers = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
-  const changeFilterParams = (e: {
-    target: { name: string; value: string };
-  }) => {
-    //menjanje parametara za filter
-    switch (e.target.name) {
-      case "filterIme":
-        setName(e.target.value);
-        break;
-      case "odabranTip":
-        setType(e.target.value);
-        break;
-      default:
-        break;
-    }
   };
+
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
 
   useEffect(() => {
     //za filtriranje
@@ -123,29 +111,10 @@ export const AllUsers = () => {
     setHideUpdateDialog(true);
   };
 
-  const handleUpdateUser = () =>{
+  const handleUpdateUser = () => {
     setHideUpdateDialog(true);
-    fetchUsers()
-      .then((response) => {
-        setAllUsers(response.data);
-        return response;
-      })
-      .then((response) => {
-        const types: string[] = response.data.reduce(
-          (prev: string[], curr: User) => {
-            if (!prev.includes(curr.UserType)) {
-              return prev.concat([curr.UserType]);
-            }
-            return prev;
-          },
-          [""]
-        );
-        setAllTypes(types);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+    fetchAllUsers();
+  };
 
   /* END UPDATE USER DIALOG */
 
@@ -174,20 +143,8 @@ export const AllUsers = () => {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 2000,
         });
-        fetchUsers().then((response) => {
-          setAllUsers(response.data);
-          let types: string[] = response.data.reduce(
-            (prev: string[], curr: User) => {
-              if (!prev.includes(curr.UserType)) {
-                return prev.concat([curr.UserType]);
-              }
-              return prev;
-            },
-            [""]
-          );
-          setAllTypes(types);
-          setHideDeleteDialog(true);
-        });
+        fetchAllUsers();
+        handleCloseDeleteDialog();
       })
       .catch((error) => {
         console.log(error);
@@ -206,29 +163,10 @@ export const AllUsers = () => {
     setHideAddDialog(true);
   };
 
-  const handleAddUser = () =>{
+  const handleAddUser = () => {
     setHideAddDialog(true);
-    fetchUsers()
-      .then((response) => {
-        setAllUsers(response.data);
-        return response;
-      })
-      .then((response) => {
-        const types: string[] = response.data.reduce(
-          (prev: string[], curr: User) => {
-            if (!prev.includes(curr.UserType)) {
-              return prev.concat([curr.UserType]);
-            }
-            return prev;
-          },
-          [""]
-        );
-        setAllTypes(types);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+    fetchAllUsers();
+  };
 
   /* END ADD USER DIALOG */
 
@@ -288,19 +226,15 @@ export const AllUsers = () => {
               maxWidth: 180,
               onRender: (user: User) => (
                 <>
-                  <button
-                    className="btn btn-success"
+                  <PrimaryButton
+                    text="Azuriraj"
                     onClick={() => handleOpenUpdateDialog(user.id)}
-                  >
-                    Azuriraj
-                  </button>{" "}
+                  />
                   &nbsp;
-                  <button
-                    className="btn btn-danger"
+                  <DefaultButton
+                    text="Obrisi"
                     onClick={() => handleOpenDeleteDialog(user.id)}
-                  >
-                    Obrisi
-                  </button>
+                  />
                 </>
               ),
             },
@@ -308,16 +242,6 @@ export const AllUsers = () => {
           checkboxVisibility={CheckboxVisibility.hidden}
           selectionMode={SelectionMode.none}
         />
-        <Dialog
-          hidden={hideDeleteDialog}
-          onDismiss={handleCloseDeleteDialog}
-          dialogContentProps={deleteDialogContentProps}
-        >
-          <DialogFooter>
-            <PrimaryButton onClick={handleCloseDeleteDialog} text="Otkazi" />
-            <DefaultButton onClick={handleDeleteUser} text="Obrisi" />
-          </DialogFooter>
-        </Dialog>
       </>
     );
 
@@ -331,54 +255,52 @@ export const AllUsers = () => {
         <h2>Svi korisnici</h2>
         <div className="content-filter-wrapper">
           <div className="content-filter-fields">
-            <span>Filtriraj po imenu:</span>
-            <input
-              type="text"
-              name="filterIme"
-              id="filterIme"
-              onChange={changeFilterParams}
-            />{" "}
-            <span>Odaberi tip korisnika:</span>
-            <select
-              name="odabranTip"
-              id="odabranTip"
-              onChange={changeFilterParams}
-            >
-              {allTypes.map((elem, index) => {
-                return (
-                  <option key={index} value={elem}>
-                    {elem}
-                  </option>
-                );
-              })}
-            </select>
-            {/*
-            <Dropdown
-              placeholder="Odaberite tip korisnika"
-              options={allTypes.map(elem=>{return {
-                key: elem,
-                text: elem
-              }})}
-              styles = {{dropdown: { width: 200 }}}
-              onChange={(e) => changeFilterParams(e)}
+            <SearchBox
+              placeholder="Filtriraj po imenu"
+              styles={{ root: { maxWidth: 250, minWidth: 250 } }}
+              onChange={(_, newValue?: string) => setName(newValue!)}
+              iconProps={{iconName: 'Filter'}}
             />
-            */}
+            <Dropdown
+              placeholder="Filtriraj po tipu korisnika"
+              options={allTypes.map((elem: string) => {
+                return { key: elem, text: elem };
+              })}
+              styles={{ dropdown: { width: 250 } }}
+              onChange={(_, option?: IDropdownOption) =>
+                setType(option?.text ?? "")
+              }
+            />
           </div>
           <div className="content-filter-action">
-            <button className="btn btn-success" onClick={handleOpenAddDialog}>
-              Dodaj novog korisnika
-            </button>
-            <Dialog
-              hidden={hideAddDialog}
-              onDismiss={handleCloseAddDialog}
-            >
+            <PrimaryButton
+              text="Dodaj novog korisnika"
+              onClick={handleOpenAddDialog}
+            />
+            <Dialog hidden={hideAddDialog} onDismiss={handleCloseAddDialog}>
               <AddUser handleDialog={handleAddUser}></AddUser>
             </Dialog>
-             <Dialog
+            <Dialog
               hidden={hideUpdateDialog}
               onDismiss={handleCloseUpdateDialog}
             >
-              <UpdateUser userId={selectedUserUpdate} handleDialog={handleUpdateUser}></UpdateUser>
+              <UpdateUser
+                userId={selectedUserUpdate}
+                handleDialog={handleUpdateUser}
+              ></UpdateUser>
+            </Dialog>
+            <Dialog
+              hidden={hideDeleteDialog}
+              onDismiss={handleCloseDeleteDialog}
+              dialogContentProps={deleteDialogContentProps}
+            >
+              <DialogFooter>
+                <PrimaryButton
+                  onClick={handleCloseDeleteDialog}
+                  text="Otkazi"
+                />
+                <DefaultButton onClick={handleDeleteUser} text="Obrisi" />
+              </DialogFooter>
             </Dialog>
           </div>
         </div>
