@@ -1,8 +1,8 @@
 {
   "users": [
     {
-      "Name": "Mihailoo",
-      "Surname": "Tomasevic",
+      "Name": "Mihailo",
+      "Surname": "Tomašević",
       "UserType": "admin",
       "DateCreated": "2023-03-08T12:06:18.203Z",
       "City": "Prijepolje",
@@ -11,7 +11,7 @@
     },
     {
       "Name": "Maka",
-      "Surname": "Makic",
+      "Surname": "Makić",
       "UserType": "seller",
       "DateCreated": "2023-03-08T12:27:24.554Z",
       "City": "Novi Sad",
@@ -20,7 +20,7 @@
     },
     {
       "Name": "Mika",
-      "Surname": "Mikic",
+      "Surname": "Mikić",
       "UserType": "buyer",
       "DateCreated": "2023-03-08T12:27:51.872Z",
       "City": "Subotica",
@@ -29,7 +29,7 @@
     },
     {
       "Name": "Pera",
-      "Surname": "Peric",
+      "Surname": "Perić",
       "UserType": "distributor",
       "DateCreated": "2023-03-08T12:28:15.703Z",
       "City": "Kragujevac",
@@ -38,16 +38,16 @@
     },
     {
       "Name": "Zaka",
-      "Surname": "Zakic",
+      "Surname": "Zakić",
       "UserType": "seller",
       "DateCreated": "2023-03-08T12:28:46.311Z",
-      "City": "Nis",
-      "Address": "Idemoo Nis",
+      "City": "Niš",
+      "Address": "Ulica 245",
       "id": 5
     },
     {
       "Name": "Baka",
-      "Surname": "Bakic",
+      "Surname": "Bakić",
       "UserType": "buyer",
       "DateCreated": "2023-03-08T12:31:48.078Z",
       "City": "Kraljevo",
@@ -56,7 +56,7 @@
     },
     {
       "Name": "Jaka",
-      "Surname": "Jakic",
+      "Surname": "Jakić",
       "UserType": "organizator",
       "DateCreated": "2023-03-08T12:32:43.218Z",
       "City": "Ruma",
@@ -65,25 +65,25 @@
     },
     {
       "Name": "Taka",
-      "Surname": "Takic",
+      "Surname": "Takić",
       "UserType": "organizator",
       "DateCreated": "2023-03-08T12:33:08.097Z",
-      "City": "Sid",
+      "City": "Šid",
       "Address": "Ulica 232",
       "id": 8
     },
     {
       "Name": "Vaka",
-      "Surname": "Vakic",
+      "Surname": "Vakić",
       "UserType": "buyer",
       "DateCreated": "2023-03-08T12:33:11.665Z",
-      "City": "Uzice",
+      "City": "Užice",
       "Address": "Ulica 124",
       "id": 9
     },
     {
       "Name": "Paka",
-      "Surname": "Pakic",
+      "Surname": "Pakić",
       "UserType": "buyer",
       "DateCreated": "2023-03-08T12:33:15.284Z",
       "City": "Vranje",
@@ -92,7 +92,7 @@
     },
     {
       "Name": "Maka",
-      "Surname": "Nakic",
+      "Surname": "Nakić",
       "UserType": "seller",
       "DateCreated": "2023-03-08T12:33:18.958Z",
       "City": "Prijepolje",
@@ -101,16 +101,16 @@
     },
     {
       "Name": "Raka",
-      "Surname": "Rakic",
-      "UserType": "seller",
+      "Surname": "Rakić",
+      "UserType": "buyer",
       "DateCreated": "2023-03-15T09:17:00.026Z",
       "City": "Bor",
-      "Address": "Ulica 7245",
+      "Address": "Ulica 724",
       "id": 12
     },
     {
       "Name": "Gaka",
-      "Surname": "Gakic",
+      "Surname": "Gakić",
       "UserType": "buyer",
       "DateCreated": "2023-03-16T10:40:01.090Z",
       "City": "Smederevo",
@@ -119,7 +119,7 @@
     },
     {
       "Name": "Laka",
-      "Surname": "Lakic",
+      "Surname": "Lakić",
       "UserType": "owner",
       "DateCreated": "2023-03-16T12:11:59.164Z",
       "City": "Lajkovac",
@@ -128,12 +128,21 @@
     },
     {
       "Name": "Saka",
-      "Surname": "Sakic",
+      "Surname": "Sakić",
       "UserType": "dealer",
       "DateCreated": "2023-03-17T11:24:06.062Z",
       "City": "Vranje",
       "Address": "Ulica 231",
       "id": 15
+    },
+    {
+      "Name": "Šaka",
+      "Surname": "Šakić",
+      "UserType": "buyer",
+      "DateCreated": "2023-03-17T12:47:30.806Z",
+      "City": "Negotin",
+      "Address": "Ulica 290",
+      "id": 16
     }
   ]
 }

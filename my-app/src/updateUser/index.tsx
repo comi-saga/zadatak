@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { User } from "../models/user";
 import "../index.css";
@@ -38,7 +38,8 @@ export const UpdateUser = (props: Props) => {
   const [originalAddress, setOriginalAddress] = useState("");
 
   useEffect(() => {
-    fetchUserById(userId)
+    if(!props.hideUpdateDialog){
+      fetchUserById(userId)
       .then((response) => {
         setUser(response.data);
 
@@ -57,6 +58,7 @@ export const UpdateUser = (props: Props) => {
       .catch((error) => {
         console.log(error);
       });
+    }
   }, [props.hideUpdateDialog]);
 
   const inputChanged = (
@@ -95,8 +97,8 @@ export const UpdateUser = (props: Props) => {
     };
 
     updateUserService(userId, data)
-      .then((response) => {
-        toast.success("Uspesno ste azurirali korisnika", {
+      .then(() => {
+        toast.success(`Uspesno ste ažurirali korisnika ${name} ${surname}`, {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 1000,
         });
@@ -130,7 +132,7 @@ export const UpdateUser = (props: Props) => {
   let updateButton;
   if (updatedData() && filledData())
     updateButton = (
-      <PrimaryButton text="Azuriraj korisnika" onClick={updateUser} />
+      <PrimaryButton text="Ažuriraj korisnika" onClick={updateUser} />
     );
   else if (updatedData() && !filledData())
     updateButton = <DefaultButton text="Niste uneli sve podatke" disabled />;
@@ -138,7 +140,7 @@ export const UpdateUser = (props: Props) => {
 
   const updateDialogContentProps = {
     type: DialogType.normal,
-    title: `Azuriraj korisnika ${user?.Name} ${user?.Surname}`,
+    title: `Ažuriraj korisnika ${user?.Name} ${user?.Surname}`,
     closeButtonAriaLabel: "Close",
   };
 

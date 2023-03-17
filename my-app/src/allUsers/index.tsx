@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { User } from "../models/user";
 import "../index.css";
 import { DateToString, deleteUser, fetchUsers } from "../service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Id } from "react-toastify/dist/types";
 import {
   DetailsList,
   CheckboxVisibility,
   SelectionMode,
   DefaultButton,
-  PrimaryButton,
   SearchBox,
   Dropdown,
   IDropdownOption,
@@ -18,6 +16,7 @@ import {
   Stack,
   Text,
   Selection,
+  TooltipHost,
 } from "@fluentui/react";
 import { AddUser } from "../addUser";
 import { UpdateUser } from "../updateUser";
@@ -33,7 +32,6 @@ export const AllUsers = () => {
 
   const [hideDeleteDialog, setHideDeleteDialog] = useState(true);
   const [selectedUserDelete, setSelectedUserDelete] = useState(-1);
-  const [toastId, setToastId] = useState<Id>(-1);
 
   const [hideAddDialog, setHideAddDialog] = useState(true);
 
@@ -57,28 +55,23 @@ export const AllUsers = () => {
           [""]
         );
         setAllTypes(types);
-        const filteredUsers = response.data.filter(
-          (elem: User) =>
-            elem.Name.toLocaleLowerCase().startsWith(
-              name.toLocaleLowerCase()
-            ) &&
-            (!type || elem.UserType === type)
-        );
+
+        let filteredUsers: User[];
+        if (name === "" && (type === "" || (type && !types.includes(type)))) filteredUsers = response.data;
+        else
+          filteredUsers = response.data.filter(
+            (elem: User) =>
+              elem.Name.toLocaleLowerCase().startsWith(
+                name.toLocaleLowerCase()
+              ) &&
+              (!type || elem.UserType === type)
+          );
         setAllUsers(filteredUsers);
         if (filteredUsers.length === 0) {
-          if (toastId === -1) {
-            const newToastId = toast.info(
-              "Nema korisnika koji zadovoljavaju kriterijum pretrage",
-              {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: false,
-              }
-            );
-            setToastId(newToastId);
-          }
-        } else {
-          toast.dismiss(toastId);
-          setToastId(-1);
+          toast.info("Nema korisnika koji zadovoljavaju kriterijum pretrage", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 1000,
+          });
         }
       })
       .catch((err) => console.log(err));
@@ -91,6 +84,10 @@ export const AllUsers = () => {
   const filterData = () => {
     fetchFilteredUsers();
   };
+
+  useEffect(() => {
+    if (name === "" && type === "") filterData();
+  }, [name, type]);
 
   /* UPDATE USER DIALOG */
 
@@ -123,10 +120,10 @@ export const AllUsers = () => {
 
   const handleDeleteUser = () => {
     deleteUser(selectedUserDelete)
-      .then((response) => {
+      .then(() => {
         toast.success("Uspesno ste obrisali korisnika", {
           position: toast.POSITION.TOP_RIGHT,
-          autoClose: 2000,
+          autoClose: 1000,
         });
         fetchFilteredUsers();
         handleCloseDeleteDialog();
@@ -215,31 +212,10 @@ export const AllUsers = () => {
           checkboxVisibility={CheckboxVisibility.onHover}
           selectionMode={SelectionMode.single}
           selection={selection}
+          selectionPreservedOnEmptyClick={true}
         />
       </>
     );
-
-  let imaDugmad;
-  if (selectedUserFromTable != null) {
-    imaDugmad = (
-      <>
-        <EditIcon
-          onClick={() => handleOpenUpdateDialog(selectedUserFromTable)}
-          style={{
-            fontSize: 30,
-            marginRight: 20,
-          }}
-        />
-        <DeleteIcon
-          onClick={() => handleOpenDeleteDialog(selectedUserFromTable)}
-          style={{
-            fontSize: 30,
-            marginRight: 20,
-          }}
-        />
-      </>
-    );
-  } else imaDugmad = null;
 
   let imaKorisnika;
   if (allUsers.length) imaKorisnika = tabela;
@@ -271,6 +247,7 @@ export const AllUsers = () => {
               styles={{ root: { maxWidth: 250, minWidth: 250 } }}
               onChange={(_, newValue?: string) => setName(newValue!)}
               iconProps={{ iconName: "Filter" }}
+              value={name}
             />
             <Dropdown
               placeholder="Filtriraj po tipu korisnika"
@@ -282,18 +259,45 @@ export const AllUsers = () => {
                 setType(option?.text ?? "")
               }
             />
-            <DefaultButton text="Filtriraj podatke" onClick={filterData} />
+            <DefaultButton
+              text="Filtriraj podatke"
+              onClick={filterData}
+            />
           </Stack>
         </Stack>
-        <Stack horizontalAlign="end" horizontal>
-          {imaDugmad}
-          <AddIcon
-            onClick={handleOpenAddDialog}
-            style={{
-              fontSize: 30,
-              marginRight: 20,
-            }}
-          />
+        <Stack
+          horizontalAlign="end"
+          horizontal={true}
+          tokens={{ childrenGap: 20 }}
+        >
+          {selectedUserFromTable && (
+            <TooltipHost content="Ažuriraj korisnika">
+              <EditIcon
+                onClick={() => handleOpenUpdateDialog(selectedUserFromTable)}
+                style={{
+                  fontSize: 20,
+                }}
+              />
+            </TooltipHost>
+          )}
+          {selectedUserFromTable && (
+            <TooltipHost content="Obriši korisnika">
+              <DeleteIcon
+                onClick={() => handleOpenDeleteDialog(selectedUserFromTable)}
+                style={{
+                  fontSize: 20,
+                }}
+              />
+            </TooltipHost>
+          )}
+          <TooltipHost content="Dodaj korisnika">
+            <AddIcon
+              onClick={handleOpenAddDialog}
+              style={{
+                fontSize: 20,
+              }}
+            />
+          </TooltipHost>
           <AddUser
             handleDialog={handleAddUser}
             hideAddDialog={hideAddDialog}

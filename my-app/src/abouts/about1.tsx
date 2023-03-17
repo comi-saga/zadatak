@@ -1,3 +1,4 @@
+import React from "react";
 import { Stack, Text } from "@fluentui/react";
 import { Timer } from "../views/timer";
 

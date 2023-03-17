@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "../index.css";
 import { addUserService } from "../service";
 import { toast } from "react-toastify";
@@ -28,7 +28,7 @@ export const AddUser = (props: Props) => {
     };
 
     addUserService(data)
-      .then((response) => {
+      .then(() => {
         setName("");
         setSurname("");
         setAddress("");

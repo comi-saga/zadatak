@@ -1,3 +1,4 @@
+import React from "react"
 import { Stack } from '@fluentui/react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -5,8 +6,6 @@ import "../index.css";
 
 export const Menu = () =>{
     const location = useLocation();
-    console.log(location.pathname);
-
     const classNameAbout1 = location.pathname === "/about1" ? "list-group-item active" : "list-group-item";
     const classNameAllUsers = location.pathname === "/" ? "list-group-item active" : "list-group-item";
     const classNameAbout2 = location.pathname === "/about2" ? "list-group-item active" : "list-group-item";
