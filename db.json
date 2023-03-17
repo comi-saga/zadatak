@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "Name": "Mihailo",
+      "Name": "Mihailoo",
       "Surname": "Tomasevic",
       "UserType": "admin",
       "DateCreated": "2023-03-08T12:06:18.203Z",
@@ -10,7 +10,7 @@
       "id": 1
     },
     {
-      "Name": "Makaa",
+      "Name": "Maka",
       "Surname": "Makic",
       "UserType": "seller",
       "DateCreated": "2023-03-08T12:27:24.554Z",
@@ -24,7 +24,7 @@
       "UserType": "buyer",
       "DateCreated": "2023-03-08T12:27:51.872Z",
       "City": "Subotica",
-      "Address": "Ulica 567",
+      "Address": "Ulica 569",
       "id": 3
     },
     {
@@ -37,12 +37,12 @@
       "id": 4
     },
     {
-      "Name": "Zakaa",
+      "Name": "Zaka",
       "Surname": "Zakic",
       "UserType": "seller",
       "DateCreated": "2023-03-08T12:28:46.311Z",
       "City": "Nis",
-      "Address": "Idemoo Niss",
+      "Address": "Idemoo Nis",
       "id": 5
     },
     {
@@ -51,7 +51,7 @@
       "UserType": "buyer",
       "DateCreated": "2023-03-08T12:31:48.078Z",
       "City": "Kraljevo",
-      "Address": "Ulica 4785",
+      "Address": "Ulica 478",
       "id": 6
     },
     {
@@ -96,7 +96,7 @@
       "UserType": "seller",
       "DateCreated": "2023-03-08T12:33:18.958Z",
       "City": "Prijepolje",
-      "Address": "Ulica 211",
+      "Address": "Ulica 210",
       "id": 11
     },
     {
@@ -105,8 +105,35 @@
       "UserType": "seller",
       "DateCreated": "2023-03-15T09:17:00.026Z",
       "City": "Bor",
-      "Address": "Ulica 724",
+      "Address": "Ulica 7245",
       "id": 12
+    },
+    {
+      "Name": "Gaka",
+      "Surname": "Gakic",
+      "UserType": "buyer",
+      "DateCreated": "2023-03-16T10:40:01.090Z",
+      "City": "Smederevo",
+      "Address": "Ulica 316",
+      "id": 13
+    },
+    {
+      "Name": "Laka",
+      "Surname": "Lakic",
+      "UserType": "owner",
+      "DateCreated": "2023-03-16T12:11:59.164Z",
+      "City": "Lajkovac",
+      "Address": "Ulica 680",
+      "id": 14
+    },
+    {
+      "Name": "Saka",
+      "Surname": "Sakic",
+      "UserType": "dealer",
+      "DateCreated": "2023-03-17T11:24:06.062Z",
+      "City": "Vranje",
+      "Address": "Ulica 231",
+      "id": 15
     }
   ]
 }

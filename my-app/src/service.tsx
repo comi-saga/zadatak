@@ -22,7 +22,7 @@ export const DateToString = (date: Date) => {
     date.getDate() +
     "/" +
     (date.getMonth() < 9 ? "0" : "") +
-    date.getMonth() +
+    (date.getMonth() + 1) +
     "/" +
     date.getFullYear() +
     " " +

@@ -5,147 +5,184 @@ import "../index.css";
 import { fetchUserById, updateUserService } from "../service";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { DefaultButton, PrimaryButton } from "@fluentui/react";
+import {
+  DefaultButton,
+  PrimaryButton,
+  Stack,
+  Dialog,
+  TextField,
+  DialogType,
+} from "@fluentui/react";
 
 type Props = {
-    userId: number,
-    handleDialog: ()=> void
-}
+  userId: number;
+  handleDialog: () => void;
+  hideUpdateDialog: boolean;
+  handleCloseUpdateDialog: () => void;
+};
 
-export const UpdateUser = (props: Props) =>{
-    const userId = props.userId;
-    const [user, setUser] = useState<User>();
+export const UpdateUser = (props: Props) => {
+  const userId = props.userId;
+  const [user, setUser] = useState<User>();
 
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [type, setType] = useState("");
-    const [city, setCity] = useState("");
-    const [address, setAddress] = useState("");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [type, setType] = useState("");
+  const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
 
-    const [originalName, setOriginalName] = useState("");
-    const [originalSurname, setOriginalSurname] = useState("");
-    const [originalType, setOriginalType] = useState("");
-    const [originalCity, setOriginalCity] = useState("");
-    const [originalAddress, setOriginalAddress] = useState("");
+  const [originalName, setOriginalName] = useState("");
+  const [originalSurname, setOriginalSurname] = useState("");
+  const [originalType, setOriginalType] = useState("");
+  const [originalCity, setOriginalCity] = useState("");
+  const [originalAddress, setOriginalAddress] = useState("");
 
-    useEffect(()=>{
-        fetchUserById(userId)
-        .then(response => {
-            setUser(response.data);
+  useEffect(() => {
+    fetchUserById(userId)
+      .then((response) => {
+        setUser(response.data);
 
-            setName(response.data.Name);
-            setSurname(response.data.Surname);
-            setType(response.data.UserType);
-            setCity(response.data.City);
-            setAddress(response.data.Address);
+        setName(response.data.Name);
+        setSurname(response.data.Surname);
+        setType(response.data.UserType);
+        setCity(response.data.City);
+        setAddress(response.data.Address);
 
-            setOriginalName(response.data.Name);
-            setOriginalSurname(response.data.Surname);
-            setOriginalType(response.data.UserType);
-            setOriginalCity(response.data.City);
-            setOriginalAddress(response.data.Address);
-            
-        })
-        .catch(error => {
-            console.log(error);
+        setOriginalName(response.data.Name);
+        setOriginalSurname(response.data.Surname);
+        setOriginalType(response.data.UserType);
+        setOriginalCity(response.data.City);
+        setOriginalAddress(response.data.Address);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [props.hideUpdateDialog]);
+
+  const inputChanged = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    let val: string = (e.target as HTMLInputElement).value;
+    switch ((e.target as HTMLInputElement).id) {
+      case "name":
+        setName(val);
+        break;
+      case "surname":
+        setSurname(val);
+        break;
+      case "type":
+        setType(val);
+        break;
+      case "city":
+        setCity(val);
+        break;
+      case "address":
+        setAddress(val);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const updateUser = () => {
+    const data = {
+      Name: name,
+      Surname: surname,
+      UserType: type,
+      DateCreated: user?.DateCreated,
+      City: city,
+      Address: address,
+    };
+
+    updateUserService(userId, data)
+      .then((response) => {
+        toast.success("Uspesno ste azurirali korisnika", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1000,
         });
-    },[])
+        props.handleDialog();
+      })
+      .catch((error) => console.error(error));
+  };
 
-    const inputChanged = (e: { target: { value: string; id: any;}; })=>{
-        let val: string = e.target.value;
-        switch(e.target.id){
-            case "name":
-                setName(val);
-                break;
-            case "surname":
-                setSurname(val);
-                break;
-            case "type":
-                setType(val);
-                break;
-            case "city":
-                setCity(val);
-                break;
-            case "address":
-                setAddress(val);
-                break;
-            default: break;
-        }
-    }
-
-    const updateUser = () => {
-        const data = {
-            Name: name,
-            Surname: surname,
-            UserType: type,
-            DateCreated: user?.DateCreated,
-            City: city,
-            Address: address
-        }
-
-        updateUserService(userId, data).then(
-            response => {
-                toast.success("Uspesno ste azurirali korisnika", {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 1000
-                });       
-                props.handleDialog();
-            }
-        ).catch(
-            error => console.error(error)
-        );
-    }
-
-    const updatedData = (): boolean =>{ // da li su podaci promenjeni
-        return name != originalName || address != originalAddress || surname != originalSurname || type != originalType || city !=originalCity;
-    }
-
-    const filledData = (): boolean =>{ // da li su svi podaci popunjeni
-        return name != "" && address != "" && surname != "" && type != "" && city != "";
-    }
-
-    let updateButton;
-    if(updatedData() && filledData())
-        updateButton = (
-            <PrimaryButton text="Azuriraj korisnika" onClick={updateUser}/>
-        );
-    else if(updatedData() && !filledData())
-        updateButton = (
-            <DefaultButton text="Niste uneli sve podatke" disabled/>
-        );
-    else
-        updateButton = (
-            <DefaultButton text="Niste promenili podatke" disabled/>
-        );      
-
+  const updatedData = (): boolean => {
+    // da li su podaci promenjeni
     return (
-        <div className="update-User-wrapper">
-            <h3>Azuriraj korisnika {name} {surname}</h3>
-            <div className="update-user-fields">
-                <table style={{margin:"0 auto"}}>
-                    <tr>
-                        <th>Ime:</th>
-                        <th><input value={name} type="text" name="" id="name" onChange={inputChanged}/></th>
-                    </tr>
-                    <tr>
-                        <th>Prezime:</th>
-                        <th><input value={surname} type="text" name="" id="surname" onChange={inputChanged}/></th>
-                    </tr>
-                    <tr>
-                        <th>Tip:</th>
-                        <th><input value={type} type="text" name="" id="type"onChange={inputChanged} /></th>
-                    </tr>
-                    <tr>
-                        <th>Grad:</th>
-                        <th><input value={city} type="text" name="" id="city" onChange={inputChanged}/></th>
-                    </tr>
-                    <tr>
-                        <th>Adresa:</th>
-                        <th><input value={address} type="text" name="" id="address" onChange={inputChanged}/></th>
-                    </tr>
-                </table> 
-            </div>
-            {updateButton}
-        </div>
+      name !== originalName ||
+      address !== originalAddress ||
+      surname !== originalSurname ||
+      type !== originalType ||
+      city !== originalCity
     );
-}
+  };
+
+  const filledData = (): boolean => {
+    // da li su svi podaci popunjeni
+    return (
+      name !== "" &&
+      address !== "" &&
+      surname !== "" &&
+      type !== "" &&
+      city !== ""
+    );
+  };
+
+  let updateButton;
+  if (updatedData() && filledData())
+    updateButton = (
+      <PrimaryButton text="Azuriraj korisnika" onClick={updateUser} />
+    );
+  else if (updatedData() && !filledData())
+    updateButton = <DefaultButton text="Niste uneli sve podatke" disabled />;
+  else updateButton = <DefaultButton text="Niste promenili podatke" disabled />;
+
+  const updateDialogContentProps = {
+    type: DialogType.normal,
+    title: `Azuriraj korisnika ${user?.Name} ${user?.Surname}`,
+    closeButtonAriaLabel: "Close",
+  };
+
+  return (
+    <Dialog
+      hidden={props.hideUpdateDialog}
+      onDismiss={props.handleCloseUpdateDialog}
+      dialogContentProps={updateDialogContentProps}
+    >
+      <Stack>
+        <Stack styles={{ root: { marginBottom: 20 } }}>
+          <TextField
+            label="Ime"
+            id="name"
+            value={name}
+            onChange={inputChanged}
+          />
+          <TextField
+            label="Prezime"
+            id="surname"
+            value={surname}
+            onChange={inputChanged}
+          />
+          <TextField
+            label="Tip"
+            id="type"
+            value={type}
+            onChange={inputChanged}
+          />
+          <TextField
+            label="Grad"
+            id="city"
+            value={city}
+            onChange={inputChanged}
+          />
+          <TextField
+            label="Adresa"
+            id="address"
+            value={address}
+            onChange={inputChanged}
+          />
+        </Stack>
+        {updateButton}
+      </Stack>
+    </Dialog>
+  );
+};

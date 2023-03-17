@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { DateToString } from "../service";
 
 export const Timer = () => {
   const [timer, setTimer] = useState<Date>(new Date());
@@ -14,13 +15,7 @@ export const Timer = () => {
 
   return (
     <>
-      {timer.getDate() < 10 ? 0 : ""}
-      {timer.getDate()}/{timer.getMonth() < 9 ? 0 : ""}
-      {timer.getMonth() + 1}/{timer.getFullYear()} -{" "}
-      {timer.getHours() < 10 ? 0 : ""}
-      {timer.getHours()} : {timer.getMinutes() < 10 ? 0 : ""}
-      {timer.getMinutes()} : {timer.getSeconds() < 10 ? 0 : ""}
-      {timer.getSeconds()}
+      {DateToString(timer)}
     </>
   );
 };

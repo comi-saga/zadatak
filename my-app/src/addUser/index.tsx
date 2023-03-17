@@ -3,11 +3,13 @@ import "../index.css";
 import { addUserService } from "../service";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { DefaultButton, PrimaryButton } from "@fluentui/react";
+import { DefaultButton, Dialog, DialogType, PrimaryButton, Stack, TextField } from "@fluentui/react";
 
 type Props = {
-  handleDialog: () => void
-}
+  handleDialog: () => void;
+  hideAddDialog: boolean;
+  handleCloseAddDialog: () => void;
+};
 
 export const AddUser = (props: Props) => {
   const [name, setName] = useState("");
@@ -36,14 +38,16 @@ export const AddUser = (props: Props) => {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 1000,
         });
-        props.handleDialog();      
+        props.handleDialog();
       })
       .catch((error) => console.error(error));
   };
 
-  const inputChanged = (e: { target: { value: string; id: any } }) => {
-    let val: string = e.target.value;
-    switch (e.target.id) {
+  const inputChanged = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    let val: string = (e.target as HTMLInputElement).value;
+    switch ((e.target as HTMLInputElement).id) {
       case "name":
         setName(val);
         break;
@@ -67,88 +71,62 @@ export const AddUser = (props: Props) => {
   const filledData = (): boolean => {
     // da li su svi podaci popunjeni
     return (
-      name != "" && address != "" && surname != "" && type != "" && city != ""
+      name !== "" && address !== "" && surname !== "" && type !== "" && city !== ""
     );
   };
 
   let addButton;
   if (filledData())
-    addButton = (
-      <PrimaryButton text="Dodaj korisnika" onClick={addUser}/>
-    );
-  else
-    addButton = (
-      <DefaultButton text="Niste uneli sve podatke" disabled/>
-    );
+    addButton = <PrimaryButton text="Dodaj korisnika" onClick={addUser} />;
+  else addButton = <DefaultButton text="Niste uneli sve podatke" disabled />;
+
+  const addDialogContentProps = {
+    type: DialogType.normal,
+    title: `Dodaj novog korisnika`,
+    closeButtonAriaLabel: "Close",
+  };
 
   return (
-    <div className="add-User-wrapper">
-      <h3>Dodaj novog korisnika</h3>
-      <div className="add-user-fields">
-        <table style={{ margin: "0 auto" }}>
-          <tr>
-            <th>Ime:</th>
-            <th>
-              <input
-                value={name}
-                type="text"
-                name=""
-                id="name"
-                onChange={inputChanged}
-              />
-            </th>
-          </tr>
-          <tr>
-            <th>Prezime:</th>
-            <th>
-              <input
-                value={surname}
-                type="text"
-                name=""
-                id="surname"
-                onChange={inputChanged}
-              />
-            </th>
-          </tr>
-          <tr>
-            <th>Tip:</th>
-            <th>
-              <input
-                value={type}
-                type="text"
-                name=""
-                id="type"
-                onChange={inputChanged}
-              />
-            </th>
-          </tr>
-          <tr>
-            <th>Grad:</th>
-            <th>
-              <input
-                value={city}
-                type="text"
-                name=""
-                id="city"
-                onChange={inputChanged}
-              />
-            </th>
-          </tr>
-          <tr>
-            <th>Adresa:</th>
-            <th>
-              <input
-                value={address}
-                type="text"
-                name=""
-                id="address"
-                onChange={inputChanged}
-              />
-            </th>
-          </tr>
-        </table>
-      </div>
-      {addButton}
-    </div>
+    <Dialog
+      hidden={props.hideAddDialog}
+      onDismiss={props.handleCloseAddDialog}
+      dialogContentProps= {addDialogContentProps}
+    >
+      <Stack>
+        <Stack styles={{ root: { marginBottom: 20 } }}>
+          <TextField
+            label="Ime"
+            id="name"
+            value={name}
+            onChange={inputChanged}
+          />
+          <TextField
+            label="Prezime"
+            id="surname"
+            value={surname}
+            onChange={inputChanged}
+          />
+          <TextField
+            label="Tip"
+            id="type"
+            value={type}
+            onChange={inputChanged}
+          />
+          <TextField
+            label="Grad"
+            id="city"
+            value={city}
+            onChange={inputChanged}
+          />
+          <TextField
+            label="Adresa"
+            id="address"
+            value={address}
+            onChange={inputChanged}
+          />
+        </Stack>
+        {addButton}
+      </Stack>
+    </Dialog>
   );
 };

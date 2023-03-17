@@ -1,3 +1,4 @@
+import { Stack } from '@fluentui/react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import "../index.css";
@@ -6,9 +7,9 @@ export const Menu = () =>{
     const location = useLocation();
     console.log(location.pathname);
 
-    const classNameAbout1 = location.pathname == "/about1" ? "list-group-item active" : "list-group-item";
-    const classNameAllUsers = location.pathname == "/" ? "list-group-item active" : "list-group-item";
-    const classNameAbout2 = location.pathname == "/about2" ? "list-group-item active" : "list-group-item";
+    const classNameAbout1 = location.pathname === "/about1" ? "list-group-item active" : "list-group-item";
+    const classNameAllUsers = location.pathname === "/" ? "list-group-item active" : "list-group-item";
+    const classNameAbout2 = location.pathname === "/about2" ? "list-group-item active" : "list-group-item";
     
     const styleForText = {
         color: "black",
@@ -16,7 +17,7 @@ export const Menu = () =>{
     };
 
     return (
-    <div className="left-menu">
+    <Stack className="left-menu">
       <ul className="list-group">
         <li className={classNameAllUsers}>
           <Link to="/"><span style={styleForText}>Svi korisnici</span></Link>
@@ -28,6 +29,6 @@ export const Menu = () =>{
           <Link to="/about2"><span style={styleForText}>About 2</span> </Link>
         </li>
       </ul>
-    </div>
+    </Stack>
   );
 }
