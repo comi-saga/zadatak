@@ -161,6 +161,15 @@
       "City": "Zrenjanin",
       "Address": "Ulica 280",
       "id": 18
+    },
+    {
+      "Name": "Oaka",
+      "Surname": "Oakic",
+      "UserType": "seller",
+      "DateCreated": "2023-03-20T12:19:40.957Z",
+      "City": "Priboj",
+      "Address": "Ulica 655",
+      "id": 19
     }
   ]
 }

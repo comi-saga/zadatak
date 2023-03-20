@@ -90,6 +90,17 @@ export const AllUsers = () => {
             autoClose: 1000,
           });
         }
+        
+        switch(sortInfo.columnIndex){
+          case 0: sortData(filteredUsers,"Ime", sortInfo.isDescending); break;
+          case 1: sortData(filteredUsers,"Prezime", sortInfo.isDescending); break;
+          case 2: sortData(filteredUsers,"Tip", sortInfo.isDescending); break;
+          case 3: sortData(filteredUsers,"Datum", sortInfo.isDescending); break;
+          case 4: sortData(filteredUsers,"Grad", sortInfo.isDescending); break;
+          case 5: sortData(filteredUsers,"Adresa", sortInfo.isDescending); break;
+          default: break;
+        }
+
       })
       .catch((err) => console.log(err));
   };
@@ -166,19 +177,19 @@ export const AllUsers = () => {
     },
   });
 
-  const sortData = (name: string, descending: boolean) => {
+  const sortData = (filtered: User[],name: string, descending: boolean) => {
     switch (name) {
       case "Ime":
         if (!descending)
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (a.Name.toLowerCase() > b.Name.toLowerCase()) return 1;
               else return -1;
             })
           );
         else
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (a.Name.toLowerCase() > b.Name.toLowerCase()) return -1;
               else return 1;
             })
@@ -187,14 +198,14 @@ export const AllUsers = () => {
       case "Prezime":
         if (!descending)
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (a.Surname.toLowerCase() > b.Surname.toLowerCase()) return 1;
               else return -1;
             })
           );
         else
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (a.Surname.toLowerCase() > b.Surname.toLowerCase()) return -1;
               else return 1;
             })
@@ -203,14 +214,14 @@ export const AllUsers = () => {
       case "Tip":
         if (!descending)
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (a.UserType > b.UserType) return 1;
               else return -1;
             })
           );
         else
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (a.UserType > b.UserType) return -1;
               else return 1;
             })
@@ -219,7 +230,7 @@ export const AllUsers = () => {
       case "Datum":
         if (!descending)
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (
                 new Date(a.DateCreated).getTime() >
                 new Date(b.DateCreated).getTime()
@@ -230,7 +241,7 @@ export const AllUsers = () => {
           );
         else
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (
                 new Date(a.DateCreated).getTime() >
                 new Date(b.DateCreated).getTime()
@@ -243,14 +254,14 @@ export const AllUsers = () => {
       case "Grad":
         if (!descending)
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (a.City.toLowerCase() > b.City.toLowerCase()) return 1;
               else return -1;
             })
           );
         else
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (a.City.toLowerCase() > b.City.toLowerCase()) return -1;
               else return 1;
             })
@@ -259,14 +270,14 @@ export const AllUsers = () => {
       case "Adresa":
         if (!descending)
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (a.Address.toLowerCase() > b.Address.toLowerCase()) return 1;
               else return -1;
             })
           );
         else
           setAllUsers(
-            allUsers.sort((a: User, b: User) => {
+            filtered.sort((a: User, b: User) => {
               if (a.Address.toLowerCase() > b.Address.toLowerCase()) return -1;
               else return 1;
             })
@@ -324,8 +335,8 @@ export const AllUsers = () => {
         setSortInfo({ columnIndex: -1, isDescending: false });
         break;
     }
-    if (changed) sortData(column.name, false);
-    else sortData(column.name, reversed);
+    if (changed) sortData(allUsers, column.name, false);
+    else sortData(allUsers, column.name, reversed);
   };
 
   const tabela = // HTML tabela korisnika
