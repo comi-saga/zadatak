@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { User } from "../models/user";
 import "../index.css";
-import { DateToString, deleteUser, fetchUsers } from "../service";
+import { DateToString, fetchUsers } from "../service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -17,11 +17,18 @@ import {
   Text,
   Selection,
   TooltipHost,
+  DetailsListLayoutMode,
+  IColumn,
 } from "@fluentui/react";
 import { AddUser } from "../addUser";
 import { UpdateUser } from "../updateUser";
 import { DeleteUser } from "../views/deleteUser";
 import { AddIcon, EditIcon, DeleteIcon } from "@fluentui/react-icons-mdl2";
+
+type SortInfo = {
+  columnIndex: number;
+  isDescending: boolean;
+};
 
 export const AllUsers = () => {
   initializeIcons();
@@ -42,6 +49,11 @@ export const AllUsers = () => {
     number | null
   >(null);
 
+  const [sortInfo, setSortInfo] = useState<SortInfo>({
+    columnIndex: -1,
+    isDescending: false,
+  });
+
   const fetchFilteredUsers = () => {
     fetchUsers()
       .then((response) => {
@@ -57,7 +69,11 @@ export const AllUsers = () => {
         setAllTypes(types);
 
         let filteredUsers: User[];
-        if (name === "" && (type === "" || (type && !types.includes(type)))) filteredUsers = response.data;
+        if (type && !types.includes(type))
+          //ako smo obrisali poslednjeg korisnika nekog tipa
+          setType("");
+
+        if (name === "" && type === "") filteredUsers = response.data;
         else
           filteredUsers = response.data.filter(
             (elem: User) =>
@@ -66,6 +82,7 @@ export const AllUsers = () => {
               ) &&
               (!type || elem.UserType === type)
           );
+
         setAllUsers(filteredUsers);
         if (filteredUsers.length === 0) {
           toast.info("Nema korisnika koji zadovoljavaju kriterijum pretrage", {
@@ -101,7 +118,7 @@ export const AllUsers = () => {
   };
 
   const handleUpdateUser = () => {
-    setHideUpdateDialog(true);
+    handleCloseUpdateDialog();
     fetchFilteredUsers();
   };
 
@@ -119,18 +136,8 @@ export const AllUsers = () => {
   };
 
   const handleDeleteUser = () => {
-    deleteUser(selectedUserDelete)
-      .then(() => {
-        toast.success("Uspesno ste obrisali korisnika", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1000,
-        });
-        fetchFilteredUsers();
-        handleCloseDeleteDialog();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    handleCloseDeleteDialog();
+    fetchFilteredUsers();
   };
 
   /* END DELETE DIALOG */
@@ -146,7 +153,7 @@ export const AllUsers = () => {
   };
 
   const handleAddUser = () => {
-    setHideAddDialog(true);
+    handleCloseAddDialog();
     fetchFilteredUsers();
   };
 
@@ -159,60 +166,242 @@ export const AllUsers = () => {
     },
   });
 
+  const sortData = (name: string, descending: boolean) => {
+    switch (name) {
+      case "Ime":
+        if (!descending)
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (a.Name.toLowerCase() > b.Name.toLowerCase()) return 1;
+              else return -1;
+            })
+          );
+        else
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (a.Name.toLowerCase() > b.Name.toLowerCase()) return -1;
+              else return 1;
+            })
+          );
+        break;
+      case "Prezime":
+        if (!descending)
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (a.Surname.toLowerCase() > b.Surname.toLowerCase()) return 1;
+              else return -1;
+            })
+          );
+        else
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (a.Surname.toLowerCase() > b.Surname.toLowerCase()) return -1;
+              else return 1;
+            })
+          );
+        break;
+      case "Tip":
+        if (!descending)
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (a.UserType > b.UserType) return 1;
+              else return -1;
+            })
+          );
+        else
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (a.UserType > b.UserType) return -1;
+              else return 1;
+            })
+          );
+        break;
+      case "Datum":
+        if (!descending)
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (
+                new Date(a.DateCreated).getTime() >
+                new Date(b.DateCreated).getTime()
+              )
+                return 1;
+              else return -1;
+            })
+          );
+        else
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (
+                new Date(a.DateCreated).getTime() >
+                new Date(b.DateCreated).getTime()
+              )
+                return -1;
+              else return 1;
+            })
+          );
+        break;
+      case "Grad":
+        if (!descending)
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (a.City.toLowerCase() > b.City.toLowerCase()) return 1;
+              else return -1;
+            })
+          );
+        else
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (a.City.toLowerCase() > b.City.toLowerCase()) return -1;
+              else return 1;
+            })
+          );
+        break;
+      case "Adresa":
+        if (!descending)
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (a.Address.toLowerCase() > b.Address.toLowerCase()) return 1;
+              else return -1;
+            })
+          );
+        else
+          setAllUsers(
+            allUsers.sort((a: User, b: User) => {
+              if (a.Address.toLowerCase() > b.Address.toLowerCase()) return -1;
+              else return 1;
+            })
+          );
+        break;
+      default:
+        break;
+    }
+  };
+
+  const onColumnClick = (
+    ev: React.MouseEvent<HTMLElement>,
+    column: IColumn
+  ): void => {
+    const reversed: boolean = !sortInfo.isDescending;
+    let changed: boolean = false;
+    switch (column.name) {
+      case "Ime":
+        if (sortInfo.columnIndex != 0) {
+          setSortInfo({ columnIndex: 0, isDescending: false });
+          changed = true;
+        } else setSortInfo({ columnIndex: 0, isDescending: reversed });
+        break;
+      case "Prezime":
+        if (sortInfo.columnIndex != 1) {
+          setSortInfo({ columnIndex: 1, isDescending: false });
+          changed = true;
+        } else setSortInfo({ columnIndex: 1, isDescending: reversed });
+        break;
+      case "Tip":
+        if (sortInfo.columnIndex != 2) {
+          setSortInfo({ columnIndex: 2, isDescending: false });
+          changed = true;
+        } else setSortInfo({ columnIndex: 2, isDescending: reversed });
+        break;
+      case "Datum":
+        if (sortInfo.columnIndex != 3) {
+          setSortInfo({ columnIndex: 3, isDescending: false });
+          changed = true;
+        } else setSortInfo({ columnIndex: 3, isDescending: reversed });
+        break;
+      case "Grad":
+        if (sortInfo.columnIndex != 4) {
+          setSortInfo({ columnIndex: 4, isDescending: false });
+          changed = true;
+        } else setSortInfo({ columnIndex: 4, isDescending: reversed });
+        break;
+      case "Adresa":
+        if (sortInfo.columnIndex != 5) {
+          setSortInfo({ columnIndex: 5, isDescending: false });
+          changed = true;
+        } else setSortInfo({ columnIndex: 5, isDescending: reversed });
+        break;
+      default:
+        setSortInfo({ columnIndex: -1, isDescending: false });
+        break;
+    }
+    if (changed) sortData(column.name, false);
+    else sortData(column.name, reversed);
+  };
+
   const tabela = // HTML tabela korisnika
     (
       <>
         <DetailsList
           items={allUsers}
+          layoutMode={DetailsListLayoutMode.fixedColumns}
           columns={[
             {
               key: "Ime",
               name: "Ime",
               minWidth: 20,
-              maxWidth: 160,
-              onRender: (items: User) => items.Name,
+              flexGrow: 1,
+              onRender: (item: User) => item.Name,
+              onColumnClick: onColumnClick,
+              isSorted: sortInfo.columnIndex === 0 ? true : false,
+              isSortedDescending: sortInfo.isDescending === true ? true : false,
             },
             {
               key: "Prezime",
               name: "Prezime",
               minWidth: 20,
-              maxWidth: 160,
-              onRender: (items: User) => items.Surname,
+              flexGrow: 1,
+              onRender: (item: User) => item.Surname,
+              onColumnClick: onColumnClick,
+              isSorted: sortInfo.columnIndex === 1 ? true : false,
+              isSortedDescending: sortInfo.isDescending === true ? true : false,
             },
             {
               key: "Tip",
               name: "Tip",
               minWidth: 20,
-              maxWidth: 160,
-              onRender: (items: User) => items.UserType,
+              flexGrow: 1,
+              onRender: (item: User) => item.UserType,
+              onColumnClick: onColumnClick,
+              isSorted: sortInfo.columnIndex === 2 ? true : false,
+              isSortedDescending: sortInfo.isDescending === true ? true : false,
             },
             {
               key: "Datum",
               name: "Datum",
               minWidth: 20,
-              maxWidth: 160,
+              flexGrow: 1,
               onRender: (item: User) =>
                 DateToString(new Date(item.DateCreated)),
+              onColumnClick: onColumnClick,
+              isSorted: sortInfo.columnIndex === 3 ? true : false,
+              isSortedDescending: sortInfo.isDescending === true ? true : false,
             },
             {
               key: "Grad",
               name: "Grad",
               minWidth: 20,
-              maxWidth: 160,
-              onRender: (items: User) => items.City,
+              flexGrow: 1,
+              onRender: (item: User) => item.City,
+              onColumnClick: onColumnClick,
+              isSorted: sortInfo.columnIndex === 4 ? true : false,
+              isSortedDescending: sortInfo.isDescending === true ? true : false,
             },
             {
               key: "Adresa",
               name: "Adresa",
               minWidth: 20,
-              maxWidth: 160,
-              onRender: (items: User) => items.Address,
+              flexGrow: 1,
+              onRender: (item: User) => item.Address,
+              onColumnClick: onColumnClick,
+              isSorted: sortInfo.columnIndex === 5 ? true : false,
+              isSortedDescending: sortInfo.isDescending === true ? true : false,
             },
           ]}
           checkboxVisibility={CheckboxVisibility.onHover}
           selectionMode={SelectionMode.single}
           selection={selection}
           selectionPreservedOnEmptyClick={true}
+          compact={true}
         />
       </>
     );
@@ -262,6 +451,7 @@ export const AllUsers = () => {
             <DefaultButton
               text="Filtriraj podatke"
               onClick={filterData}
+              disabled={name === "" && type === ""}
             />
           </Stack>
         </Stack>
@@ -318,7 +508,9 @@ export const AllUsers = () => {
           />
         </Stack>
       </Stack>
-      <Stack tokens={{ padding: 20 }}>{imaKorisnika}</Stack>
+      <Stack tokens={{ padding: 20 }}>
+        <Stack.Item align="auto">{imaKorisnika}</Stack.Item>
+      </Stack>
       <ToastContainer />
     </>
   );

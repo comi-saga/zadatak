@@ -6,8 +6,9 @@ import {
   DefaultButton,
 } from "@fluentui/react";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { User } from "../models/user";
-import { fetchUserById } from "../service";
+import { deleteUser, fetchUserById } from "../service";
 
 type Props = {
   userId: number;
@@ -39,6 +40,20 @@ export const DeleteUser = (props: Props) => {
     }
   }, [props.hidden]);
 
+  const deleteUserService = () =>{
+    deleteUser(props.userId)
+      .then(() => {
+        toast.success("Uspesno ste obrisali korisnika", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1000,
+        });
+        props.handleOnDelete();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   return (
     <Dialog
       hidden={props.hidden}
@@ -47,7 +62,7 @@ export const DeleteUser = (props: Props) => {
     >
       <DialogFooter>
         <PrimaryButton onClick={props.handleOnClose} text="Otkaži" />
-        <DefaultButton onClick={props.handleOnDelete} text="Obriši" />
+        <DefaultButton onClick={deleteUserService} text="Obriši" />
       </DialogFooter>
     </Dialog>
   );
