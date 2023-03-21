@@ -69,11 +69,14 @@ export const AllUsers = () => {
         setAllTypes(types);
 
         let filteredUsers: User[];
-        if (type && !types.includes(type))
+       
+        if (type && !types.includes(type)){
           //ako smo obrisali poslednjeg korisnika nekog tipa
           setType("");
+          setSelectedUserFromTable(null);
+        }
 
-        if (name === "" && type === "") filteredUsers = response.data;
+        if (name === "" && (type === "" || (type && !types.includes(type)))) filteredUsers = response.data;
         else
           filteredUsers = response.data.filter(
             (elem: User) =>
@@ -183,15 +186,13 @@ export const AllUsers = () => {
         if (!descending)
           setAllUsers(
             filtered.sort((a: User, b: User) => {
-              if (a.Name.toLowerCase() > b.Name.toLowerCase()) return 1;
-              else return -1;
+              return a.Name.toLowerCase().localeCompare(b.Name.toLowerCase(),'en');
             })
           );
         else
           setAllUsers(
             filtered.sort((a: User, b: User) => {
-              if (a.Name.toLowerCase() > b.Name.toLowerCase()) return -1;
-              else return 1;
+              return -a.Name.toLowerCase().localeCompare(b.Name.toLowerCase(),'en');
             })
           );
         break;
@@ -199,15 +200,13 @@ export const AllUsers = () => {
         if (!descending)
           setAllUsers(
             filtered.sort((a: User, b: User) => {
-              if (a.Surname.toLowerCase() > b.Surname.toLowerCase()) return 1;
-              else return -1;
+               return a.Surname.toLowerCase().localeCompare(b.Surname.toLowerCase(),'en');
             })
           );
         else
           setAllUsers(
             filtered.sort((a: User, b: User) => {
-              if (a.Surname.toLowerCase() > b.Surname.toLowerCase()) return -1;
-              else return 1;
+              return -a.Surname.toLowerCase().localeCompare(b.Surname.toLowerCase(),'en');
             })
           );
         break;
@@ -215,15 +214,13 @@ export const AllUsers = () => {
         if (!descending)
           setAllUsers(
             filtered.sort((a: User, b: User) => {
-              if (a.UserType > b.UserType) return 1;
-              else return -1;
+              return a.UserType.toLowerCase().localeCompare(b.UserType.toLowerCase(),'en');
             })
           );
         else
           setAllUsers(
             filtered.sort((a: User, b: User) => {
-              if (a.UserType > b.UserType) return -1;
-              else return 1;
+               return -a.UserType.toLowerCase().localeCompare(b.UserType.toLowerCase(),'en');
             })
           );
         break;
@@ -255,15 +252,13 @@ export const AllUsers = () => {
         if (!descending)
           setAllUsers(
             filtered.sort((a: User, b: User) => {
-              if (a.City.toLowerCase() > b.City.toLowerCase()) return 1;
-              else return -1;
+               return a.City.toLowerCase().localeCompare(b.City.toLowerCase(),'en');
             })
           );
         else
           setAllUsers(
             filtered.sort((a: User, b: User) => {
-              if (a.City.toLowerCase() > b.City.toLowerCase()) return -1;
-              else return 1;
+               return -a.City.toLowerCase().localeCompare(b.City.toLowerCase(),'en');
             })
           );
         break;
@@ -271,15 +266,13 @@ export const AllUsers = () => {
         if (!descending)
           setAllUsers(
             filtered.sort((a: User, b: User) => {
-              if (a.Address.toLowerCase() > b.Address.toLowerCase()) return 1;
-              else return -1;
+               return a.Address.toLowerCase().localeCompare(b.Address.toLowerCase(),'en');
             })
           );
         else
           setAllUsers(
             filtered.sort((a: User, b: User) => {
-              if (a.Address.toLowerCase() > b.Address.toLowerCase()) return -1;
-              else return 1;
+               return -a.Address.toLowerCase().localeCompare(b.Address.toLowerCase(),'en');
             })
           );
         break;
@@ -450,6 +443,7 @@ export const AllUsers = () => {
               value={name}
             />
             <Dropdown
+              id="dropdown"
               placeholder="Filtriraj po tipu korisnika"
               options={allTypes.map((elem: string) => {
                 return { key: elem, text: elem };
@@ -458,6 +452,7 @@ export const AllUsers = () => {
               onChange={(_, option?: IDropdownOption) =>
                 setType(option?.text ?? "")
               }
+              selectedKey={type}
             />
             <DefaultButton
               text="Filtriraj podatke"
