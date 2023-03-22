@@ -19,6 +19,7 @@ import {
   TooltipHost,
   DetailsListLayoutMode,
   IColumn,
+  PrimaryButton,
 } from "@fluentui/react";
 import { AddUser } from "../addUser";
 import { UpdateUser } from "../updateUser";
@@ -69,14 +70,15 @@ export const AllUsers = () => {
         setAllTypes(types);
 
         let filteredUsers: User[];
-       
-        if (type && !types.includes(type)){
+
+        if (type && !types.includes(type)) {
           //ako smo obrisali poslednjeg korisnika nekog tipa
           setType("");
           setSelectedUserFromTable(null);
         }
 
-        if (name === "" && (type === "" || (type && !types.includes(type)))) filteredUsers = response.data;
+        if (name === "" && (type === "" || (type && !types.includes(type))))
+          filteredUsers = response.data;
         else
           filteredUsers = response.data.filter(
             (elem: User) =>
@@ -93,17 +95,29 @@ export const AllUsers = () => {
             autoClose: 1000,
           });
         }
-        
-        switch(sortInfo.columnIndex){
-          case 0: sortData(filteredUsers,"Ime", sortInfo.isDescending); break;
-          case 1: sortData(filteredUsers,"Prezime", sortInfo.isDescending); break;
-          case 2: sortData(filteredUsers,"Tip", sortInfo.isDescending); break;
-          case 3: sortData(filteredUsers,"Datum", sortInfo.isDescending); break;
-          case 4: sortData(filteredUsers,"Grad", sortInfo.isDescending); break;
-          case 5: sortData(filteredUsers,"Adresa", sortInfo.isDescending); break;
-          default: break;
-        }
 
+        switch (sortInfo.columnIndex) {
+          case 0:
+            sortData(filteredUsers, "Ime", sortInfo.isDescending);
+            break;
+          case 1:
+            sortData(filteredUsers, "Prezime", sortInfo.isDescending);
+            break;
+          case 2:
+            sortData(filteredUsers, "Tip", sortInfo.isDescending);
+            break;
+          case 3:
+            sortData(filteredUsers, "Datum", sortInfo.isDescending);
+            break;
+          case 4:
+            sortData(filteredUsers, "Grad", sortInfo.isDescending);
+            break;
+          case 5:
+            sortData(filteredUsers, "Adresa", sortInfo.isDescending);
+            break;
+          default:
+            break;
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -180,49 +194,41 @@ export const AllUsers = () => {
     },
   });
 
-  const sortData = (filtered: User[],name: string, descending: boolean) => {
+  const sortData = (filtered: User[], name: string, descending: boolean) => {
     switch (name) {
       case "Ime":
-        if (!descending)
-          setAllUsers(
-            filtered.sort((a: User, b: User) => {
-              return a.Name.toLowerCase().localeCompare(b.Name.toLowerCase(),'en');
-            })
-          );
-        else
-          setAllUsers(
-            filtered.sort((a: User, b: User) => {
-              return -a.Name.toLowerCase().localeCompare(b.Name.toLowerCase(),'en');
-            })
-          );
+        setAllUsers(
+          [...filtered].sort((a: User, b: User) => {
+            return (
+              a.Name.toLowerCase().localeCompare(b.Name.toLowerCase(), "en") *
+              (descending ? -1 : 1)
+            );
+          })
+        );
         break;
       case "Prezime":
-        if (!descending)
-          setAllUsers(
-            filtered.sort((a: User, b: User) => {
-               return a.Surname.toLowerCase().localeCompare(b.Surname.toLowerCase(),'en');
-            })
-          );
-        else
-          setAllUsers(
-            filtered.sort((a: User, b: User) => {
-              return -a.Surname.toLowerCase().localeCompare(b.Surname.toLowerCase(),'en');
-            })
-          );
+        setAllUsers(
+          filtered.sort((a: User, b: User) => {
+            return (
+              a.Surname.toLowerCase().localeCompare(
+                b.Surname.toLowerCase(),
+                "en"
+              ) * (descending ? -1 : 1)
+            );
+          })
+        );
         break;
       case "Tip":
-        if (!descending)
-          setAllUsers(
-            filtered.sort((a: User, b: User) => {
-              return a.UserType.toLowerCase().localeCompare(b.UserType.toLowerCase(),'en');
-            })
-          );
-        else
-          setAllUsers(
-            filtered.sort((a: User, b: User) => {
-               return -a.UserType.toLowerCase().localeCompare(b.UserType.toLowerCase(),'en');
-            })
-          );
+        setAllUsers(
+          filtered.sort((a: User, b: User) => {
+            return (
+              a.UserType.toLowerCase().localeCompare(
+                b.UserType.toLowerCase(),
+                "en"
+              ) * (descending ? -1 : 1)
+            );
+          })
+        );
         break;
       case "Datum":
         if (!descending)
@@ -249,32 +255,26 @@ export const AllUsers = () => {
           );
         break;
       case "Grad":
-        if (!descending)
-          setAllUsers(
-            filtered.sort((a: User, b: User) => {
-               return a.City.toLowerCase().localeCompare(b.City.toLowerCase(),'en');
-            })
-          );
-        else
-          setAllUsers(
-            filtered.sort((a: User, b: User) => {
-               return -a.City.toLowerCase().localeCompare(b.City.toLowerCase(),'en');
-            })
-          );
+        setAllUsers(
+          filtered.sort((a: User, b: User) => {
+            return (
+              a.City.toLowerCase().localeCompare(b.City.toLowerCase(), "en") *
+              (descending ? -1 : 1)
+            );
+          })
+        );
         break;
       case "Adresa":
-        if (!descending)
-          setAllUsers(
-            filtered.sort((a: User, b: User) => {
-               return a.Address.toLowerCase().localeCompare(b.Address.toLowerCase(),'en');
-            })
-          );
-        else
-          setAllUsers(
-            filtered.sort((a: User, b: User) => {
-               return -a.Address.toLowerCase().localeCompare(b.Address.toLowerCase(),'en');
-            })
-          );
+        setAllUsers(
+          filtered.sort((a: User, b: User) => {
+            return (
+              a.Address.toLowerCase().localeCompare(
+                b.Address.toLowerCase(),
+                "en"
+              ) * (descending ? -1 : 1)
+            );
+          })
+        );
         break;
       default:
         break;
@@ -454,9 +454,14 @@ export const AllUsers = () => {
               }
               selectedKey={type}
             />
-            <DefaultButton
+            <PrimaryButton
               text="Filtriraj podatke"
               onClick={filterData}
+              disabled={name === "" && type === ""}
+            />
+            <DefaultButton
+              text="Resetuj filter"
+              onClick={()=>{setType(""); setName("");}}
               disabled={name === "" && type === ""}
             />
           </Stack>

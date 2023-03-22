@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "Name": "Mihailo",
+      "Name": "Mihailoo",
       "Surname": "Tomašević",
       "UserType": "admin",
       "DateCreated": "2023-03-08T12:06:18.203Z",
@@ -179,6 +179,15 @@
       "City": "Beograd",
       "Address": "Ulica 150",
       "id": 20
+    },
+    {
+      "Name": "Uaka",
+      "Surname": "Uakić",
+      "UserType": "buyer",
+      "DateCreated": "2023-03-22T10:52:33.012Z",
+      "City": "Ba",
+      "Address": "Ulica 200",
+      "id": 21
     }
   ]
 }
